@@ -23,7 +23,7 @@ De tu lista:
 
 | Acción    | Nombre(es) en Braze | Fuente de verdad | Qué hacemos |
 |-----------|----------------------|------------------|-------------|
-| **Mantener** | **subscription_renewal** y **upcoming_subscription_renewal** (dos eventos) | Backend (observers/crons) | No unificamos: son dos momentos distintos. **subscription_renewal** = renovación ya cobrada; **upcoming_subscription_renewal** = aviso de que la renovación se acerca. Si en Braze existe **subscription_renewed**, lo tratamos como equivalente a **subscription_renewal** y no creamos un tercer nombre. **login** de la lista es uso genérico (rutas/formularios), no un evento Braze; no se toca. |
+| **Mantener** | **subscription_renewal** y **upcoming_subscription_renewal** (dos eventos) | Backend (observers/crons) | No unificamos: son dos momentos distintos. **subscription_renewal** = renovación ya cobrada; **upcoming_subscription_renewal** = aviso de que la renovación se acerca. Si en Braze existe **subscription_renewed**, lo tratamos como equivalente a **subscription_renewal** y no creamos un tercer nombre. |
 
 **Por qué:** Unificar “renovación hecha” y “próxima renovación” en uno solo mezclaría dos conceptos y complicaría segmentos (revenue vs recordatorios). Se mantienen los dos eventos con sus nombres.
 
