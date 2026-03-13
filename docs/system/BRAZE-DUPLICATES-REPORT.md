@@ -4,6 +4,18 @@ Resumen de eventos y atributos que significan lo mismo en el codebase (excl. doc
 
 ---
 
+## Criterio: valor de verdad y dónde consolidar (front vs backend)
+
+Al consolidar duplicados no debe asumirse que **todo** se unifica en frontend. Para cada par hay que decidir:
+
+- **Nombre canónico** en Braze (un solo nombre de evento/atributo).
+- **Dónde vive la “verdad” de negocio**: si el hecho lo confirma mejor el **backend** (BD, transacción real) o el **frontend** (acción del usuario en UI). Eso define qué origen es **fuente de verdad** para métricas, dedup y reportes.
+- **Consolidar en front vs backend** según ese análisis: a veces conviene que el evento “oficial” lo emita solo el backend (más fiable); otras veces el frontend es el único que tiene el dato o lo tiene antes; en otros casos ambos emiten con el mismo nombre pero se documenta cuál se usa para conteos.
+
+En cada sección de eventos duplicados se indica explícitamente **si consolidar en front, en backend o ambos (con dueño claro)** y el **por qué** desde valor de verdad y negocio.
+
+---
+
 ## 1. Eventos duplicados / equivalentes
 
 ### 1.1 `started_checkout` vs `checkout_started`
@@ -70,9 +82,19 @@ window.braze.logCustomEvent('checkout_started', {
 const EventCheckoutStarted = "checkout_started"
 ```
 
+**¿Dónde consolidar (front vs backend) y por qué?**
+
+| Criterio | Frontend | Backend (Magento) |
+|----------|----------|-------------------|
+| **Valor de verdad** | Dispara al **entrar** a la página de checkout (intención temprana). | Dispara al **guardar dirección de envío** en checkout (paso confirmado, carrito persistido). |
+| **Conteo / negocio** | Puede inflar si el usuario abandona sin guardar. | Refleja un paso real completado (más fiable para funnel). |
+| **Payload** | Rico en producto/contacto (marketing). | Rico en quote/carrito (IDs, totales desde BD). |
+
+**Recomendación:** Nombre canónico **`checkout_started`**. **Consolidar la fuente de verdad en backend (Magento)**: el evento que cuenta para métricas de “inicio de checkout” debería ser el del plugin (usuario guardó dirección). El frontend puede seguir enviando un evento con el **mismo nombre** `checkout_started` en el paso anterior (landing a checkout) para contexto temprano, pero documentar que para reportes y segmentos estrictos se use el origen backend, o bien desactivar el envío frontend en rutas donde Magento ya dispara para evitar duplicados. No asumir “todo en front”: aquí el backend tiene mayor valor de verdad.
+
 **Conclusión de parámetros:** No son equivalentes: **frontend** envía contexto de producto/usuario, el **backend** envía contexto de quote/carrito. Si se unifica el nombre en Braze, hay que decidir un **superset de propiedades** o normalizar a un esquema común (por ejemplo, siempre enviar `product_*` + `quote_id` cuando exista).  
 **Diferencia conceptual:** Mismo concepto (usuario inició checkout). Origen distinto: frontend vs backend y distinto shape de payload.  
-**Recomendación:** Unificar en **`checkout_started`** (alineado con Magento y nomenclatura `*_started`). Actualizar frontend (enhance.md-version1, kwilthealth.com) y `microservices/shared/braze/events.go` a `checkout_started` y deprecar `started_checkout`.
+**Recomendación:** Unificar **nombre** en **`checkout_started`** en todos los orígenes. **Fuente de verdad para negocio:** backend (Magento). Actualizar frontend y microservices al mismo nombre; decidir si frontend sigue enviando (con mismo nombre) o se deja solo backend según necesidad de “checkout iniciado temprano” vs evitar duplicados.
 
 ---
 
@@ -122,6 +144,8 @@ $event = [
 
 - Mantener **dos eventos distintos** con sus payloads tal como arriba.  
 - Si en Braze existe un alias `subscription_renewed`, mapearlo lógicamente a `subscription_renewal` (no crear un tercer nombre en código).
+
+**¿Dónde consolidar (front vs backend)?** No aplica: ambos eventos son **solo backend** (observers Magento y crons). No hay duplicado front/back; son dos momentos de negocio distintos (renovación ejecutada vs próximo renewal). Mantener ambos nombres.
 
 ---
 
@@ -191,7 +215,17 @@ $event = [
 ];
 ```
 
-**Recomendación:** Consolidar en **`account_registered`** (más usado en frontend y scripts). Cambiar en magento-kwt y magento-emd el observer `RegisterSuccess.php` para enviar `account_registered` en lugar de `customer_registered`, y deprecar `customer_registered` en Braze/documentación. Idealmente, armonizar un payload mínimo esperado: `customer_id`, `email`, `sms`, `first_name`, `last_name`, `registration_source`, `link_to_account_login`.
+**¿Dónde consolidar (front vs backend) y por qué?**
+
+| Criterio | Frontend | Backend (Magento) |
+|----------|----------|-------------------|
+| **Valor de verdad** | Dispara tras submit del formulario de registro (puede haber race con la creación en BD). | Dispara cuando el cliente **ya está creado** en BD (observer `customer_register_success`). |
+| **Conteo / negocio** | Riesgo de contar intentos o dobles si hay retries. | Un registro = un cliente creado; **fuente de verdad** clara. |
+| **Payload** | A menudo mínimo (email, nombre, link). | Perfil completo (store, website, dob, gender, etc.). |
+
+**Recomendación:** Nombre canónico **`account_registered`**. **Consolidar la fuente de verdad en backend (Magento)**: el evento que cuenta para “registros” y cohortes debería ser el del observer de registro exitoso. El frontend puede seguir enviando `account_registered` para inmediatez en Canvas/trigger, pero para métricas y reportes usar el origen backend. Cambiar en Magento el **nombre** del evento de `customer_registered` a `account_registered` (manteniendo backend como dueño del hecho). No consolidar “en front”: el backend es quien confirma el registro real.
+
+**Recomendación (resumen):** Consolidar **nombre** en **`account_registered`**. **Fuente de verdad:** backend (Magento). Cambiar observer RegisterSuccess a enviar `account_registered`; armonizar payload mínimo: `customer_id`, `email`, `sms`, `first_name`, `last_name`, `registration_source`, `link_to_account_login`.
 
 ---
 
@@ -254,9 +288,18 @@ $event = [
 ];
 ```
 
+**¿Dónde consolidar (front vs backend) y por qué?**
+
+| Criterio | Frontend | Backend (Magento) / Crons |
+|----------|----------|----------------------------|
+| **Valor de verdad** | Dispara en el momento del login en UI (inmediato). | Magento: cuando la sesión de cliente se crea realmente. Crons: leen `last_login` de BD (histórico). |
+| **Conteo / negocio** | Bueno para “acaba de entrar” (triggers). | Backend/cron confirman que el login existió en sistema; mejor para “última vez que entró” y reportes. |
+| **Payload** | `date_logged_in`, `portal_url`, email, sms. | Magento: customer_id, email; crons: mismo esquema desde BD. |
+
+**Recomendación:** Nombre canónico **`logged_into_portal`**. **Consolidar la fuente de verdad en backend**: cuando Magento dispare el evento (observer Login), que use el nombre `logged_into_portal` y sea la fuente de verdad para “login en tienda”; en portales/crons que ya envían `logged_into_portal`, el backend (crons que leen last_login) puede ser fuente de verdad para backfill. Frontend puede seguir enviando para inmediatez. No asumir “solo front”: el backend (Magento o crons) aporta la confirmación de que el login ocurrió en sistema.
+
 **Conclusión de parámetros:** Ambos eventos describen el **mismo login**, pero el payload de `customer_logged_in` está orientado a IDs Magento y el de `logged_into_portal` a telemetría de portal (email/sms/fecha/url).  
-**Diferencia conceptual:** Mismo acto de login; diferente naming y shape de propiedades según la capa.  
-**Recomendación:** Unificar en **`logged_into_portal`** (ya estándar en frontend y emd). En magento-kwt (y magento-emd si se reactiva el observer) cambiar el evento a `logged_into_portal` para alinear con el resto. Mantener `logged_in_sent` solo como atributo interno si se sigue usando, y homogeneizar el payload mínimo esperado: `email`, `sms`, `date_logged_in`, `portal_url`.
+**Recomendación (resumen):** Unificar **nombre** en **`logged_into_portal`**. **Fuente de verdad:** backend (Magento cuando activo, o crons desde BD). Cambiar observer Login a `logged_into_portal`; homogeneizar payload mínimo: `email`, `sms`, `date_logged_in`, `portal_url`.
 
 ---
 
@@ -327,9 +370,22 @@ window.braze.logCustomEvent('add_to_cart', {
 });
 ```
 
-**Conclusión de parámetros:** Representan el mismo hecho (“se añadió un producto al carrito”), pero con payloads distintos: backend enfocado en IDs/qty/precio técnico; frontend en datos de marketing/analytics. Hay overlap (`product_name`, `product_plan`/`plan_length`, `product_price`, contacto), pero no son idénticos.  
-**Diferencia conceptual:** Mismo evento de negocio, distintos orígenes y distinto detalle de payload.  
-**Recomendación:** Consolidar en **`add_to_cart`** (más corto y usado en frontend/microservices). Cambiar en magento-kwt y magento-emd el `CartItemRepositoryPlugin` para enviar `add_to_cart` en lugar de `product_added_to_cart`, y documentar un esquema mínimo recomendado (`product_name`, `product_sku`, `product_plan`, `product_price`, `email`, `sms`, `quantity`).
+**¿Dónde consolidar (front vs backend) y por qué?**
+
+| Criterio | Frontend | Backend (Magento) |
+|----------|----------|-------------------|
+| **Valor de verdad** | Dispara al añadir ítem en UI (portal/Vue). En flujos solo-portal puede ser la **única** fuente. | Dispara cuando el ítem **ya está en el quote/carrito** en BD (CartItemRepository::save). |
+| **Conteo / negocio** | En Magento: puede adelantarse o duplicar si backend también envía. En portal puro: es la verdad. | En Magento: refleja carrito real (fuente de verdad para “añadido al carrito” en tienda). |
+| **Payload** | Rico en producto/imagen/plan (marketing). | Rico en sku, qty, price, quote_id (sistema). |
+
+**Recomendación:** Nombre canónico **`add_to_cart`**. **Dónde consolidar depende del flujo:**
+- **Donde exista Magento (tienda):** **Fuente de verdad = backend (Magento)**. El plugin confirma que el carrito se actualizó. Cambiar el nombre del evento en el plugin a `add_to_cart`; el frontend puede dejar de enviar el mismo evento en esa ruta para evitar duplicados, o enviar con el mismo nombre pero documentar que para métricas se usa el backend.
+- **Flujos solo portal (sin carrito Magento):** la **fuente de verdad es el frontend** (no hay backend de carrito). Mantener envío frontend con nombre `add_to_cart`.
+
+No consolidar “todo en front”: en tienda Magento el backend debe ser la referencia para “añadido al carrito” real.
+
+**Conclusión de parámetros:** Representan el mismo hecho (“se añadió un producto al carrito”), pero con payloads distintos.  
+**Recomendación (resumen):** Consolidar **nombre** en **`add_to_cart`**. **Fuente de verdad:** backend (Magento) en flujos con carrito Magento; frontend en flujos solo portal. Cambiar CartItemRepositoryPlugin a `add_to_cart`; documentar esquema mínimo (`product_name`, `product_sku`, `product_plan`, `product_price`, `email`, `sms`, `quantity`).
 
 ---
 
@@ -562,23 +618,23 @@ Uso muy extendido: `order_id` suele ser ID interno; `order_number` es el número
 
 ## 3. Resumen de acciones sugeridas
 
-| Tema                 | Acción                                                                                                         |
-| -------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Checkout event       | Unificar en `checkout_started`; actualizar frontend y microservices.                                           |
-| Registro             | Unificar en `account_registered`; cambiar observer RegisterSuccess en Magento.                                 |
-| Login event          | Unificar en `logged_into_portal`; cambiar observer Login en Magento.                                           |
-| Cart event           | Unificar en `add_to_cart`; cambiar CartItemRepositoryPlugin en Magento.                                        |
-| Direcciones          | Usar `billing_address_line_2` y `shipping_address_line_2` en todos los envíos.                                 |
-| SMS                  | Usar `sms` (minúscula) en magento-emd.                                                                         |
-| Email                | Usar `email` (minúscula) como atributo Braze.                                                                  |
-| Cupón (atributo)     | Unificar en `order_coupon` o `coupon`; evento `coupon_code`.                                                   |
-| Descuento (atributo) | Usar `order_discount` para perfil.                                                                             |
-| Video consult        | Unificar en `last_video_consultation_date`.                                                                    |
-| Renewal (días)       | Unificar en `days_until_subscription_renewal`.                                                                 |
-| Renewal (fecha)      | Unificar en `date_of_renewal` en payloads Braze.                                                               |
-| Portal URLs          | `portal_link`, `account_login_link`; deprecar `portal_url` y `link_to_account_login` en Braze.                 |
-| Cancel reason        | Atributo: `subscription_cancel_reason`; evento: `cancellation_reason`.                                         |
-| Plan/frequency       | Atributo perfil: `subscription_frequency` (y opcionalmente `product_plan`); reducir uso de `last_plan_length`. |
+| Tema                 | Nombre canónico        | Fuente de verdad (front vs backend) | Acción                                                                                   |
+| -------------------- | ---------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Checkout event       | `checkout_started`     | **Backend** (Magento, al guardar dirección) | Unificar nombre en todos; métricas/conteo basados en backend. Actualizar front y microservices al mismo nombre. |
+| Registro             | `account_registered`   | **Backend** (Magento, registro exitoso)    | Cambiar observer RegisterSuccess a `account_registered`; backend = fuente para conteos.  |
+| Login event          | `logged_into_portal`   | **Backend** (Magento o crons desde BD)      | Cambiar observer Login a `logged_into_portal`; backend/cron = fuente de verdad.         |
+| Cart event           | `add_to_cart`          | **Backend** en Magento; **Frontend** en flujos solo portal | Cambiar plugin a `add_to_cart`; en tienda Magento usar backend para métricas.             |
+| Direcciones          | —                      | —                                    | Usar `billing_address_line_2` y `shipping_address_line_2` en todos los envíos.             |
+| SMS                  | —                      | —                                    | Usar `sms` (minúscula) en magento-emd.                                                     |
+| Email                | —                      | —                                    | Usar `email` (minúscula) como atributo Braze.                                              |
+| Cupón (atributo)     | —                      | —                                    | Unificar en `order_coupon` o `coupon`; evento `coupon_code`.                               |
+| Descuento (atributo) | —                      | —                                    | Usar `order_discount` para perfil.                                                         |
+| Video consult        | —                      | —                                    | Unificar en `last_video_consultation_date`.                                                |
+| Renewal (días)       | —                      | —                                    | Unificar en `days_until_subscription_renewal`.                                             |
+| Renewal (fecha)      | —                      | —                                    | Unificar en `date_of_renewal` en payloads Braze.                                           |
+| Portal URLs          | —                      | —                                    | `portal_link`, `account_login_link`; deprecar `portal_url` y `link_to_account_login` en Braze. |
+| Cancel reason        | —                      | —                                    | Atributo: `subscription_cancel_reason`; evento: `cancellation_reason`.                     |
+| Plan/frequency       | —                      | —                                    | Atributo perfil: `subscription_frequency` (y opcionalmente `product_plan`); reducir uso de `last_plan_length`. |
 
 ---
 
