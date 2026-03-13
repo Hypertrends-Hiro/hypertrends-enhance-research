@@ -10,10 +10,19 @@ Resumen de eventos y atributos que significan lo mismo en el codebase (excl. doc
 
 | Variante | Dónde se usa | Notas |
 |----------|--------------|--------|
-| **started_checkout** | enhance.md-version1 (UserCheckout.vue, Payment.vue), kwilthealth.com (CheckoutView, CartView), microservices (events.go) | Evento enviado desde **frontend** (Vue) al iniciar checkout. |
+| **started_checkout** | enhance.md-version1 (UserCheckout.vue, Payment.vue), kwilthealth.com (CheckoutView, CartView, CartView.vue, `useBrazeTracking.js`), microservices (events.go) | Evento enviado desde **frontend** (Vue/microservicios) al iniciar checkout. |
 | **checkout_started** | magento-kwt, magento-emd: `ShippingInformationManagementPlugin.php` (al guardar dirección de envío en checkout) | Evento enviado desde **backend Magento** (plugin). |
 
-**Diferencia:** Mismo concepto (usuario inició checkout). Origen distinto: frontend vs backend.  
+**Parámetros actuales:**  
+- **started_checkout (frontend, Braze JS / composables):**  
+  - Variantes de payload:  
+  - `email`, `SMS`/`sms`, `product_name` (string o array), `product_sku` (a veces), `product_plan`, `product_image`, `product_price`, `product_url`, `currency`, `timestamp`.  
+  - En algunos flujos solo se envía `email`, `sms`, `product_name`, `product_plan`.  
+- **checkout_started (Magento plugin):**  
+  - `quote_id`, `store_id`, `grand_total`, `items_count` (propiedades de carrito/quote Magento).
+
+**Conclusión de parámetros:** No son equivalentes: **frontend** envía contexto de producto/usuario, el **backend** envía contexto de quote/carrito. Si se unifica el nombre en Braze, hay que decidir un **superset de propiedades** o normalizar a un esquema común (por ejemplo, siempre enviar `product_*` + `quote_id` cuando exista).  
+**Diferencia conceptual:** Mismo concepto (usuario inició checkout). Origen distinto: frontend vs backend y distinto shape de payload.  
 **Recomendación:** Unificar en **`checkout_started`** (alineado con Magento y nomenclatura `*_started`). Actualizar frontend (enhance.md-version1, kwilthealth.com) y `microservices/shared/braze/events.go` a `checkout_started` y deprecar `started_checkout`.
 
 ---
@@ -39,10 +48,19 @@ No son duplicados; son dos eventos distintos.
 | Variante | Dónde se usa | Notas |
 |----------|--------------|--------|
 | **customer_registered** | magento-kwt, magento-emd: `Enhance/Braze/Observer/Customer/RegisterSuccess.php` | Backend Magento: registro exitoso de cliente. |
-| **account_registered** | enhance.md-version1 (Auth.vue), kwilthealth.com (RegisterView, LiveFormPreview), magento-emd (BrazeEventBuilder, BrazeEventProcessors, braze_sync_by_email), microservices (events.go) | Frontend + scripts/cron emd: mismo hecho (registro de cuenta). |
+| **account_registered** | enhance.md-version1 (Auth.vue, `useBrazeTracking.js`), kwilthealth.com (RegisterView, LiveFormPreview, `useBrazeTracking.js`), magento-kwt (braze_events_cron.php), magento-emd (BrazeEventBuilder, BrazeEventProcessors, braze_sync_by_email), microservices (events.go) | Frontend + scripts/cron emd: mismo hecho (registro de cuenta). |
 
-**Diferencia:** Mismo hecho; Magento usa `customer_registered`, resto del ecosistema usa `account_registered`.  
-**Recomendación:** Consolidar en **`account_registered`** (más usado en frontend y scripts). Cambiar en magento-kwt y magento-emd el observer `RegisterSuccess.php` para enviar `account_registered` en lugar de `customer_registered`, y deprecar `customer_registered` en Braze/documentación.
+**Parámetros actuales:**  
+- **customer_registered (Magento observer):**  
+  - `properties` típicas: `source`, `store_id`, `website_id`, `email`, `first_name`, `last_name`, `dob`, `gender`, `sms`, etc.  
+- **account_registered (frontend enhance.md-version1 / kwilthealth.com):**  
+  - `customer_id`, `first_name`, `last_name`, `email`, `SMS`/`sms`, `link_to_account_login`.  
+- **account_registered (scripts/crons Magento):**  
+  - Mínimo: `email`, `sms` y a veces `registration_source`, `link_to_account_login`.
+
+**Conclusión de parámetros:** Todos representan la **misma acción de registro**, pero el conjunto de propiedades no es idéntico: el observer Magento tiene payload más rico; algunos flujos de frontend solo envían `email/sms/login_link`.  
+**Diferencia conceptual:** Mismo evento de negocio, con distintos orígenes y nivel de detalle.  
+**Recomendación:** Consolidar en **`account_registered`** (más usado en frontend y scripts). Cambiar en magento-kwt y magento-emd el observer `RegisterSuccess.php` para enviar `account_registered` en lugar de `customer_registered`, y deprecar `customer_registered` en Braze/documentación. Idealmente, armonizar un payload mínimo esperado: `customer_id`, `email`, `sms`, `first_name`, `last_name`, `registration_source`, `link_to_account_login`.
 
 ---
 
@@ -51,14 +69,20 @@ No son duplicados; son dos eventos distintos.
 | Variante | Dónde se usa | Notas |
 |----------|--------------|--------|
 | **customer_logged_in** | magento-kwt: `Enhance/Braze/Observer/Customer/Login.php` (activo). magento-emd: mismo observer pero **comentado** | Solo Magento; “login como cliente”. |
-| **logged_into_portal** | enhance.md-version1, kwilthealth.com, magento-emd (BrazeEventBuilder, BrazeEventProcessors, braze_sync_by_email) | Frontend + cron/scripts: login en portal. |
+| **logged_into_portal** | enhance.md-version1 (LoginRegister.vue, Intake/Auth.vue, Customer/Auth.vue, `useBrazeTracking.js`), kwilthealth.com (LoginView, services/login.js, `useBrazeTracking.js`), magento-emd (BrazeEventBuilder, BrazeEventProcessors, braze_sync_by_email) | Frontend + cron/scripts: login en portal. |
 | **logged_in** | magento-emd: atributos de tracking (`logged_in_sent`) y claves internas | Uso interno (dedup), no como nombre de evento enviado a Braze. |
 | **login** | Uso genérico (rutas, formularios, recaptcha action); no como evento Braze | No es evento Braze. |
 
-**Diferencia:**  
-- `customer_logged_in` = evento Magento (storefront login).  
-- `logged_into_portal` = mismo concepto en portal/Vue y scripts emd.  
-**Recomendación:** Unificar en **`logged_into_portal`** (ya estándar en frontend y emd). En magento-kwt (y magento-emd si se reactiva el observer) cambiar el evento a `logged_into_portal` para alinear con el resto. Mantener `logged_in_sent` solo como atributo interno si se sigue usando.
+**Parámetros actuales:**  
+- **customer_logged_in (Magento observer):**  
+  - `customer_id`, `email`, `store_id`, `website_id` (y potencialmente más metadatos de cliente).  
+- **logged_into_portal (frontend / composables / crons):**  
+  - Siempre incluyen al menos: `email`, `SMS`/`sms`, `date_logged_in`, `portal_url`.  
+  - En emd (buildLoggedInEvent) se usa el mismo esquema (`date_logged_in`, `portal_url`, `email`, `SMS`).  
+
+**Conclusión de parámetros:** Ambos eventos describen el **mismo login**, pero el payload de `customer_logged_in` está orientado a IDs Magento y el de `logged_into_portal` a telemetría de portal (email/sms/fecha/url).  
+**Diferencia conceptual:** Mismo acto de login; diferente naming y shape de propiedades según la capa.  
+**Recomendación:** Unificar en **`logged_into_portal`** (ya estándar en frontend y emd). En magento-kwt (y magento-emd si se reactiva el observer) cambiar el evento a `logged_into_portal` para alinear con el resto. Mantener `logged_in_sent` solo como atributo interno si se sigue usando, y homogeneizar el payload mínimo esperado: `email`, `sms`, `date_logged_in`, `portal_url`.
 
 ---
 
@@ -67,10 +91,18 @@ No son duplicados; son dos eventos distintos.
 | Variante | Dónde se usa | Notas |
 |----------|--------------|--------|
 | **product_added_to_cart** | magento-kwt, magento-emd: `Enhance/Braze/Plugin/CartItemRepositoryPlugin.php` (al añadir/actualizar ítem en carrito) | Backend Magento. |
-| **add_to_cart** | enhance.md-version1 (UserCartDetails, SelectMedication, MedicalInformation), kwilthealth.com (ProductDetails, useBrazeTracking), magento-emd (BrazeEventProcessors comentado, BrazeEventBuilder comentado), microservices (events.go) | Frontend y referencias en scripts. |
+| **add_to_cart** | enhance.md-version1 (UserCartDetails, SelectMedication, MedicalInformation), kwilthealth.com (ProductDetails, `useBrazeTracking.js`, MembershipPayment.vue, LiveFormPreview.vue), magento-emd (BrazeEventProcessors comentado, BrazeEventBuilder comentado), microservices (events.go) | Frontend y referencias en scripts. |
 
-**Diferencia:** Mismo hecho (ítem añadido al carrito). Magento usa un nombre, frontend/microservices otro.  
-**Recomendación:** Consolidar en **`add_to_cart`** (más corto y usado en frontend/microservices). Cambiar en magento-kwt y magento-emd el `CartItemRepositoryPlugin` para enviar `add_to_cart` en lugar de `product_added_to_cart`.
+**Parámetros actuales:**  
+- **product_added_to_cart (Magento plugin, cuando está habilitado):**  
+  - Payload típico de Magento: `product_id`/`sku`, `name`, `qty`, `price`, posiblemente `plan_length`/`product_plan`, `quote_id` y metadatos de carrito.  
+- **add_to_cart (frontend / composables):**  
+  - En enhance.md-version1: `email`, `SMS`/`sms`, `product_name`, `product_sku`, `product_image`, `product_price`, `plan_length`/`product_plan`, `currency`, `quantity`, `timestamp`.  
+  - En kwilthealth.com: al menos `email`, `sms`, `product_name`, `product_image`, `product_price`, `product_plan`, más flags como `add_to_cart_success`, `default_payment`, `address{...}` en algunos flujos.  
+
+**Conclusión de parámetros:** Representan el mismo hecho (“se añadió un producto al carrito”), pero con payloads distintos: backend enfocado en IDs/qty/precio técnico; frontend en datos de marketing/analytics. Hay overlap (`product_name`, `product_plan`/`plan_length`, `product_price`, contacto), pero no son idénticos.  
+**Diferencia conceptual:** Mismo evento de negocio, distintos orígenes y distinto detalle de payload.  
+**Recomendación:** Consolidar en **`add_to_cart`** (más corto y usado en frontend/microservices). Cambiar en magento-kwt y magento-emd el `CartItemRepositoryPlugin` para enviar `add_to_cart` en lugar de `product_added_to_cart`, y documentar un esquema mínimo recomendado (`product_name`, `product_sku`, `product_plan`, `product_price`, `email`, `sms`, `quantity`).
 
 ---
 
