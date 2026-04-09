@@ -1,0 +1,638 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>All Events and Attributes Map</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>body{padding:24px}.table td,.table th{vertical-align:top}code{background:#f5f5f5;padding:2px 5px;border-radius:4px}pre{white-space:pre-wrap;word-break:break-word}.small-note{color:#6c757d}</style></head><body><div class="container-fluid">
+<h1 class="mb-2">Mapa completo: eventos y atributos Braze</h1><p class="small-note">Payload mostrado = expresion exacta o construccion real detectada en callsite.</p><p class="small-note">Eventos: <b>76</b> · Atributos: <b>8</b></p>
+<h2 class="mt-4">Tabla maestra de eventos</h2><div class="table-responsive"><table class="table table-bordered table-sm"><thead class="table-light"><tr><th>Evento</th><th>Clasificacion</th><th>Significado / uso / contexto</th><th>Archivos de evidencia</th><th>Payload</th></tr></thead><tbody>
+<tr><td><code>account_registered</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM0">Ver payload</button></td></tr>
+<div class="modal fade" id="evM0" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>account_registered</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email: accountDetails.email || &#x27;&#x27;,
+      sms: accountDetails.sms || accountDetails.phone || &#x27;&#x27;,
+      link_to_account_login: accountDetails.link_to_account_login || `${window.location.origin}/login` || &#x27;&#x27;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>add_to_cart</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/SelectMedication.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserCartDetails.vue</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM1">Ver payload</button></td></tr>
+<div class="modal fade" id="evM1" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>add_to_cart</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></p><pre><code>payload</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>add_to_cart_failed</code></td><td><code>frontend</code></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM2">Ver payload</button></td></tr>
+<div class="modal fade" id="evM2" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>add_to_cart_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></p><pre><code>{
+      email: this.userInfo?.email || &#x27;&#x27;,
+      product_name: this.product?.name,
+      product_image: this.product?.image || &#x27;&#x27;,
+      product_price: this.product?.price,
+      product_url: window.location.href,
+      product_id: sku,
+      error: responseMain?.message || &quot;Failed to add main item&quot;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>add_to_cart_success</code></td><td><code>frontend</code></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM3">Ver payload</button></td></tr>
+<div class="modal fade" id="evM3" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>add_to_cart_success</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></p><pre><code>{
+      email: this.userInfo?.email || &#x27;&#x27;,
+      product_name: this.product?.name,
+      product_image: this.product?.image || &#x27;&#x27;,
+      product_price: this.product?.price,
+      product_url: window.location.href,
+      product_id: sku,
+      purchase_option: this.purchaseOption,
+      comprehensive_panel_selected: this.comprehensiveSelected,
+      cart_id: responseMain.data
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>AddPaymentInfo</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM4">Ver payload</button></td></tr>
+<div class="modal fade" id="evM4" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>AddPaymentInfo</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      value: parseFloat(value),
+      currency: currency,
+      content_type: &#x27;product&#x27;,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>address_saved</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/views/cart/AddAddressForm.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM5">Ver payload</button></td></tr>
+<div class="modal fade" id="evM5" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>address_saved</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/AddAddressForm.vue</code></p><pre><code>{
+        address_type: defaultBilling ? &#x27;shipping_and_billing&#x27; : &#x27;shipping&#x27;,
+        address_line1: form.line1,
+        address_line2: form.line2 || &#x27;&#x27;,
+        city: form.city,
+        state: form.state,
+        zip: form.zip,
+        country: &#x27;US&#x27;,
+        phone: form._phoneDigits,
+        is_new_address: !props.initial.id,
+        is_default_shipping: true,
+        is_default_billing: defaultBilling,
+        saved_at: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>AddToCart</code></td><td><code>frontend</code></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM6">Ver payload</button></td></tr>
+<div class="modal fade" id="evM6" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>AddToCart</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      value: parseFloat(value),
+      currency: currency,
+      content_type: &#x27;product&#x27;,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>appointment_booked</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM7">Ver payload</button></td></tr>
+<div class="modal fade" id="evM7" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>appointment_booked</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      provider_id: appointmentDetails.providerId,
+      appointment_date: appointmentDetails.date,
+      appointment_time: appointmentDetails.time
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>appointment_cancelled</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM8">Ver payload</button></td></tr>
+<div class="modal fade" id="evM8" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>appointment_cancelled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      appointment_id: appointmentId,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>appointment_rescheduled</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM9">Ver payload</button></td></tr>
+<div class="modal fade" id="evM9" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>appointment_rescheduled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      new_appointment_date: appointmentDetails.new_appointment_date || appointmentDetails.appointment_date || appointmentDetails.date || &#x27;&#x27;,
+      new_appointment_time: appointmentDetails.new_appointment_time || appointmentDetails.appointment_time || appointmentDetails.time || &#x27;&#x27;,
+      timezone: appointmentDetails.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || &#x27;&#x27;,
+      location: appointmentDetails.location || appointmentDetails.location_link || &#x27;&#x27;,
+      provider_name: appointmentDetails.provider_name || appointmentDetails.providerName || &#x27;&#x27;,
+      email: appointmentDetails.email || &#x27;&#x27;,
+      sms: appointmentDetails.sms || appointmentDetails.phone || &#x27;&#x27;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>appointment_scheduled</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM10">Ver payload</button></td></tr>
+<div class="modal fade" id="evM10" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>appointment_scheduled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      appointment_date: appointmentDetails.appointment_date || appointmentDetails.date || &#x27;&#x27;,
+      appointment_time: appointmentDetails.appointment_time || appointmentDetails.time || &#x27;&#x27;,
+      provider_name: appointmentDetails.provider_name || appointmentDetails.providerName || &#x27;&#x27;,
+      location: appointmentDetails.location || appointmentDetails.location_link || &#x27;&#x27;,
+      timezone: appointmentDetails.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || &#x27;&#x27;,
+      email: appointmentDetails.email || &#x27;&#x27;,
+      sms: appointmentDetails.sms || appointmentDetails.phone || &#x27;&#x27;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>assessment_slide_submitted</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/composables/useIntakeSubmission.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM11">Ver payload</button></td></tr>
+<div class="modal fade" id="evM11" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>assessment_slide_submitted</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useIntakeSubmission.js</code></p><pre><code>{
+      intake_type: intakeType,
+      slide_index: slideIndex,
+      total_slides: totalSlides,
+      question_count: questions.length
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>button_clicked</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM12">Ver payload</button></td></tr>
+<div class="modal fade" id="evM12" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>button_clicked</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      button_name: buttonName,
+      ...context
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>cart_viewed</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>kwilthealth.com/src/views/cart/CartView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM13">Ver payload</button></td></tr>
+<div class="modal fade" id="evM13" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>cart_viewed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/CartView.vue</code></p><pre><code>{
+        cart_total: this.cartStore.grandTotalServer,
+        item_count: this.cartStore.cart.length,
+        cart_items: this.cartStore.cart.map(item =&gt; ({
+          product_id: item.sku,
+          product_name: item.name,
+          quantity: item.qty,
+          price: item.price
+        })),
+        timestamp: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>CompleteRegistration</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM14">Ver payload</button></td></tr>
+<div class="modal fade" id="evM14" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>CompleteRegistration</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      registration_method: registrationMethod,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>comprehensive_panel_added</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM15">Ver payload</button></td></tr>
+<div class="modal fade" id="evM15" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>comprehensive_panel_added</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></p><pre><code>{
+      product_id: sku,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>coupon_applied</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutSummaryEmd.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Slide/CheckoutSummaryEmd.vue</code></li><li><code>kwilthealth.com/src/views/cart/CartView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM16">Ver payload</button></td></tr>
+<div class="modal fade" id="evM16" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>coupon_applied</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/CartView.vue</code></p><pre><code>{
+        coupon_code: couponCode,
+        cart_total: this.cartStore.grandTotalServer,
+        timestamp: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>eligibility_denied</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM17">Ver payload</button></td></tr>
+<div class="modal fade" id="evM17" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>eligibility_denied</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></p><pre><code>{
+        &#x27;email&#x27;: this.normalizedUser.email || &#x27;&#x27;,
+        &#x27;sma&#x27;: this.normalizedUser.phone || &#x27;&#x27;,
+        &#x27;date_of_denial&#x27;: new Date().toISOString(),
+        &#x27;reason_for_denial&#x27;: data.reason
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>InitiateCheckout</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM18">Ver payload</button></td></tr>
+<div class="modal fade" id="evM18" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>InitiateCheckout</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      value: parseFloat(value),
+      currency: currency,
+      content_type: &#x27;product&#x27;,
+      num_items: params.num_items || 1,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_abandoned</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM19">Ver payload</button></td></tr>
+<div class="modal fade" id="evM19" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_abandoned</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      step_number: stepNumber,
+      step_name: stepName,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_completed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM20">Ver payload</button></td></tr>
+<div class="modal fade" id="evM20" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_completed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      intake_type: intakeType,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_incomplete</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM21">Ver payload</button></td></tr>
+<div class="modal fade" id="evM21" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_incomplete</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></p><pre><code>{
+    intake_name: intakeName,
+    intake_link: intakeLink,
+    email: customerInfo.email || props.formValues?.email || &#x27;&#x27;,
+    sms: customerInfo?.telephone || customerInfo.default_shipping?.telephone || customerInfo.phone || props.formValues?.phone_number || &#x27;&#x27;,
+    consultation_id: userStore.consultId || &#x27;&#x27;,
+    last_step_completed: currentSlideIndex + 1,
+    last_question_completed: lastQuestionKey,
+    last_slide_id: currentSlideData?.slide_id || &#x27;unknown&#x27;,
+    last_slide_name: currentSlideData?.slide_event || currentSlideData?.slide_id || &#x27;unknown&#x27;,
+    total_slides: totalSlidesCount,
+    progress_percentage: totalSlidesCount &gt; 0 ? Math.round(((currentSlideIndex + 1) / totalSlidesCount) * 100) : 0,
+    answers_provided: Object.keys(props.formValues || {}).length,
+    abandoned_at: new Date().toISOString()
+  }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_received</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM22">Ver payload</button></td></tr>
+<div class="modal fade" id="evM22" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_received</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></p><pre><code>eventProperties</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_slide_viewed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>kwilthealth.com/src/intake-form-renderer/IntakeFormRenderer.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM23">Ver payload</button></td></tr>
+<div class="modal fade" id="evM23" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_slide_viewed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/intake-form-renderer/IntakeFormRenderer.vue</code></p><pre><code>{
+      slide_index: newIndex + 1,
+      slide_id: slide.slide_id,
+      slide_event: slide.slide_event || &#x27;unknown&#x27;,
+      intake_type: route.params.id,
+      total_slides: props.formData?.form?.slides?.length || 0,
+      progress_percentage: Math.round(((newIndex + 1) / (props.formData?.form?.slides?.length || 1)) * 100),
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_started</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/intake-form-renderer/IntakeFormRenderer.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM24">Ver payload</button></td></tr>
+<div class="modal fade" id="evM24" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_started</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      product_type: productType,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_step_complete</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM25">Ver payload</button></td></tr>
+<div class="modal fade" id="evM25" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_step_complete</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></p><pre><code>{
+      step_number: stepNumber,
+      step_name: stepName,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>intake_step_completed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM26">Ver payload</button></td></tr>
+<div class="modal fade" id="evM26" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>intake_step_completed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      step_number: stepNumber,
+      step_name: stepName
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>Lead</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM27">Ver payload</button></td></tr>
+<div class="modal fade" id="evM27" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>Lead</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>const eventParams = {
+      content_name: contentName,
+      ...params
+    };
+if (value !== null) {
+      eventParams.value = parseFloat(value);
+      eventParams.currency = currency;
+    }
+trackEvent(&#x27;Lead&#x27;, eventParams);</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>logged_into_portal</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/LoginView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM28">Ver payload</button></td></tr>
+<div class="modal fade" id="evM28" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>logged_into_portal</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/LoginView.vue</code></p><pre><code>{
+          email: values.email,
+          sms: &#x27;&#x27;, 
+          date_logged_in: new Date().toISOString(),
+          portal_url: `${window.location.origin}/dashboard`
+        }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>login_attempted</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/LoginView.vue</code></li><li><code>kwilthealth.com/src/views/cart/LoginCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM29">Ver payload</button></td></tr>
+<div class="modal fade" id="evM29" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>login_attempted</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email: email,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>login_failed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/LoginView.vue</code></li><li><code>kwilthealth.com/src/views/cart/LoginCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM30">Ver payload</button></td></tr>
+<div class="modal fade" id="evM30" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>login_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email: email,
+      error_message: errorMessage,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>login_success</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/cart/LoginCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM31">Ver payload</button></td></tr>
+<div class="modal fade" id="evM31" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>login_success</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      user_id: userId,
+      email: email,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>membership_payment_attempted</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/MembershipPayment.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM32">Ver payload</button></td></tr>
+<div class="modal fade" id="evM32" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>membership_payment_attempted</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/MembershipPayment.vue</code></p><pre><code>{
+        timestamp: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>membership_payment_completed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/MembershipPayment.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM33">Ver payload</button></td></tr>
+<div class="modal fade" id="evM33" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>membership_payment_completed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/MembershipPayment.vue</code></p><pre><code>{
+            order_id: res?.data?.data?.[0]?.order_increment_id || &#x27;&#x27;,
+            timestamp: new Date().toISOString()
+          }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>membership_payment_failed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/MembershipPayment.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM34">Ver payload</button></td></tr>
+<div class="modal fade" id="evM34" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>membership_payment_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/MembershipPayment.vue</code></p><pre><code>{
+          error: err.message,
+          timestamp: new Date().toISOString()
+        }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>message_sent</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM35">Ver payload</button></td></tr>
+<div class="modal fade" id="evM35" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>message_sent</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      recipient_type: recipientType,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>missed_appointment</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM36">Ver payload</button></td></tr>
+<div class="modal fade" id="evM36" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>missed_appointment</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      appointment_date: appointmentDetails.appointment_date || appointmentDetails.date || &#x27;&#x27;,
+      appointment_time: appointmentDetails.appointment_time || appointmentDetails.time || &#x27;&#x27;,
+      timezone: appointmentDetails.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || &#x27;&#x27;,
+      provider_name: appointmentDetails.provider_name || appointmentDetails.providerName || &#x27;&#x27;,
+      link_to_reschedule: appointmentDetails.link_to_reschedule || appointmentDetails.reschedule_link || &#x27;&#x27;,
+      email: appointmentDetails.email || &#x27;&#x27;,
+      sms: appointmentDetails.sms || appointmentDetails.phone || &#x27;&#x27;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>order_attempted</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM37">Ver payload</button></td></tr>
+<div class="modal fade" id="evM37" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>order_attempted</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></p><pre><code>{
+        order_total: effectiveTotal,
+        item_count: this.totalItems,
+        has_coupon: this.appliedCoupons.length &gt; 0,
+        has_store_credit: this.storeCreditApplied,
+        timestamp: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>order_cancelled</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM38">Ver payload</button></td></tr>
+<div class="modal fade" id="evM38" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>order_cancelled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      order_id: orderId,
+      cancellation_reason: reason,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>order_completed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM39">Ver payload</button></td></tr>
+<div class="modal fade" id="evM39" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>order_completed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      order_id: orderDetails.orderId,
+      order_total: orderDetails.total,
+      currency: orderDetails.currency || &#x27;USD&#x27;,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>order_failed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM40">Ver payload</button></td></tr>
+<div class="modal fade" id="evM40" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>order_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></p><pre><code>{
+            error: this.placeError,
+            order_total: effectiveTotal,
+            item_count: this.totalItems,
+            timestamp: new Date().toISOString()
+          }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>order_placed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM41">Ver payload</button></td></tr>
+<div class="modal fade" id="evM41" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>order_placed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      order_id: orderDetails.orderId,
+      order_total: orderDetails.total,
+      currency: orderDetails.currency || &#x27;USD&#x27;,
+      items_count: orderDetails.itemsCount,
+      payment_method: orderDetails.paymentMethod,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>page_viewed</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md/src/router/index.js</code></li><li><code>kwilthealth.com/src/router/index.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM42">Ver payload</button></td></tr>
+<div class="modal fade" id="evM42" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>page_viewed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/router/index.js</code></p><pre><code>{
+            page_name: to.name || &#x27;unknown&#x27;,
+            page_path: to.path,
+            previous_page: from.path || &#x27;direct&#x27;,
+            timestamp: new Date().toISOString()
+        }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>PageView</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM43">Ver payload</button></td></tr>
+<div class="modal fade" id="evM43" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>PageView</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{}</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>password_reset_failed</code></td><td><code>frontend</code></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>kwilthealth.com/src/views/LoginView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM44">Ver payload</button></td></tr>
+<div class="modal fade" id="evM44" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>password_reset_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/LoginView.vue</code></p><pre><code>{
+          email: values.resetEmail,
+          error: err.message,
+          timestamp: new Date().toISOString()
+        }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>password_reset_request</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/ForgotPassword.vue</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM45">Ver payload</button></td></tr>
+<div class="modal fade" id="evM45" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>password_reset_request</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/ForgotPassword.vue</code></p><pre><code>{
+                email: submittedEmail,
+                request_date: new Date().toISOString(),
+                page_url: window.location.href
+              }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>password_reset_requested</code></td><td><code>frontend</code></td><td>Evento de identidad/autenticacion; lifecycle de usuario.</td><td><ul><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM46">Ver payload</button></td></tr>
+<div class="modal fade" id="evM46" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>password_reset_requested</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email: email,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>payment_failed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM47">Ver payload</button></td></tr>
+<div class="modal fade" id="evM47" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>payment_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      amount: paymentDetails.amount,
+      currency: paymentDetails.currency || &#x27;USD&#x27;,
+      payment_method: paymentDetails.paymentMethod,
+      error_message: errorMessage,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>payment_method_updated</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/Payment.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserPaymentAddress.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM48">Ver payload</button></td></tr>
+<div class="modal fade" id="evM48" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>payment_method_updated</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserPaymentAddress.vue</code></p><pre><code>{
+            payment_type: this.getCardTypeShortForm(),
+            card_last4: payment.cc_last4,
+            expiration_month: this.expMonth,
+            expiration_year: this.expYear,
+            is_default: payment.default_payment || false,
+            timestamp: new Date().toISOString()
+          }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>payment_successful</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM49">Ver payload</button></td></tr>
+<div class="modal fade" id="evM49" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>payment_successful</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      transaction_id: paymentDetails.transactionId,
+      amount: paymentDetails.amount,
+      currency: paymentDetails.currency || &#x27;USD&#x27;,
+      payment_method: paymentDetails.paymentMethod,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>photo_incomplete</code></td><td><code>frontend</code></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM50">Ver payload</button></td></tr>
+<div class="modal fade" id="evM50" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>photo_incomplete</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+        email: photoDetails.email || &#x27;&#x27;,
+        sms: photoDetails.sms || photoDetails.phone || &#x27;&#x27;,
+        link_to_upload: uploadLink
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>photo_uploaded</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/PhotoUpload.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM51">Ver payload</button></td></tr>
+<div class="modal fade" id="evM51" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>photo_uploaded</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/PhotoUpload.vue</code></p><pre><code>photoUploadedData</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>product_listing_viewed</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>kwilthealth.com/src/views/Products/ProductListing.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM52">Ver payload</button></td></tr>
+<div class="modal fade" id="evM52" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>product_listing_viewed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/Products/ProductListing.vue</code></p><pre><code>{
+            total_products: this.products.length,
+            categories: this.categories,
+            timestamp: new Date().toISOString()
+          }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>purchase</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM53">Ver payload</button></td></tr>
+<div class="modal fade" id="evM53" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>purchase</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></p><pre><code>{
+                      email: this.confirmation.customer?.email || &#x27;&#x27;,
+                      SMS: purchaseSMS,
+                      order_id: this.confirmation.order.number,
+                      order_total: parseFloat(parseFloat(this.confirmation.totals?.grand_total || 0).toFixed(2)),
+                      discount: parseFloat(Math.abs(this.confirmation.totals?.discount || 0).toFixed(2)),
+                      coupon_code: couponString,
+                      product_name: firstItem.item_name || &#x27;&#x27;,
+                      product_sku: firstItemSku,
+                      product_price: parseFloat(parseFloat(firstItem.price || 0).toFixed(2)),
+                      product_image: getProductImage(firstItemSku),
+                      product_url: getProductUrl(firstItemSku),
+                      currency: &#x27;USD&#x27;,
+                      items_count: items.length,
+                      timestamp: new Date().toISOString()
+                    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>Purchase</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM54">Ver payload</button></td></tr>
+<div class="modal fade" id="evM54" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>Purchase</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      value: parseFloat(value),
+      currency: currency,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>referral_redeemed</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM55">Ver payload</button></td></tr>
+<div class="modal fade" id="evM55" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>referral_redeemed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></p><pre><code>payload</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>referral_started</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento de flujo clinico/intake; avance y drop-off.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM56">Ver payload</button></td></tr>
+<div class="modal fade" id="evM56" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>referral_started</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email_of_person_referring: referralDetails.email || referralDetails.email_of_person_referring || &#x27;&#x27;,
+      sms_of_person_referring: referralDetails.sms || referralDetails.phone || referralDetails.sms_of_person_referring || &#x27;&#x27;,
+      referral_link: referralDetails.referral_link || referralDetails.referralLink || &#x27;&#x27;,
+      referral_amount: referralDetails.referral_amount || referralDetails.amount || &#x27;&#x27;
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>registration_attempted</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/views/RegisterView.vue</code></li><li><code>kwilthealth.com/src/views/cart/RegisterCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM57">Ver payload</button></td></tr>
+<div class="modal fade" id="evM57" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>registration_attempted</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/RegisterView.vue</code></p><pre><code>{
+        email: values.email,
+        sms: phoneDigits,
+        gender: values.gender,
+        marketing_consent: values.agreeToMarketing || false,
+        timestamp: new Date().toISOString()
+      }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>registration_completed</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM58">Ver payload</button></td></tr>
+<div class="modal fade" id="evM58" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>registration_completed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      user_id: userId,
+      email: email,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>registration_failed</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/views/RegisterView.vue</code></li><li><code>kwilthealth.com/src/views/cart/RegisterCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM59">Ver payload</button></td></tr>
+<div class="modal fade" id="evM59" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>registration_failed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/views/RegisterView.vue</code></p><pre><code>{
+          email: values.email,
+          error: err.message,
+          timestamp: new Date().toISOString()
+        }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>registration_started</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM60">Ver payload</button></td></tr>
+<div class="modal fade" id="evM60" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>registration_started</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>registration_success</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM61">Ver payload</button></td></tr>
+<div class="modal fade" id="evM61" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>registration_success</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></p><pre><code>{
+                email: props.formValues.email,
+                sms: phoneDigits,
+                gender: props.formValues.gender,
+                source: &#x27;intake&#x27;,
+                timestamp: new Date().toISOString()
+              }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>remove_from_cart</code></td><td><code>frontend</code></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM62">Ver payload</button></td></tr>
+<div class="modal fade" id="evM62" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>remove_from_cart</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      product_id: product.sku || product.id,
+      product_name: product.name
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>Search</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM63">Ver payload</button></td></tr>
+<div class="modal fade" id="evM63" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>Search</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      search_string: searchString,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>search_performed</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM64">Ver payload</button></td></tr>
+<div class="modal fade" id="evM64" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>search_performed</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      search_query: query,
+      results_count: resultsCount
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>started_checkout</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Evento comercial; embudo y revenue de compra.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/Payment.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserCheckout.vue</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/cart/CartView.vue</code></li><li><code>kwilthealth.com/src/views/cart/CheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM65">Ver payload</button></td></tr>
+<div class="modal fade" id="evM65" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>started_checkout</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserCheckout.vue</code></p><pre><code>const payload = {
+        email: this.customer.general?.email || &#x27;&#x27;,
+        SMS: formattedSMS,
+        product_name: firstItem.product?.name || &#x27;&#x27;,
+        product_sku: sku,
+        product_price: parseFloat(parseFloat(firstItem.prices?.row_total?.value || 0).toFixed(2)),
+        plan_length: firstItem.product?.plan_name || &#x27;&#x27;,
+        product_image: firstItem.product?.thumbnail?.url || getProductImage(sku),
+        product_url: firstItem.product?.url || getProductUrl(sku) || window.location.href,
+        cart_total: parseFloat(parseFloat(this.orderTotal || 0).toFixed(2)),
+        item_count: items.length,
+        currency: &#x27;USD&#x27;,
+        timestamp: new Date().toISOString()
+      };
+// used by: trackEvent(&#x27;started_checkout&#x27;, payload)</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>SubmitApplication</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM66">Ver payload</button></td></tr>
+<div class="modal fade" id="evM66" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>SubmitApplication</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      content_name: applicationType,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>Subscribe</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM67">Ver payload</button></td></tr>
+<div class="modal fade" id="evM67" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>Subscribe</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>const eventParams = { ...params };
+if (value !== null) {
+      eventParams.value = parseFloat(value);
+      eventParams.currency = currency;
+    }
+trackEvent(&#x27;Subscribe&#x27;, eventParams);</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>subscription_canceled</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM68">Ver payload</button></td></tr>
+<div class="modal fade" id="evM68" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>subscription_canceled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></p><pre><code>{
+      subscription_id: subscriptionId,
+      cancellation_reason: reason,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>subscription_cancelled</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM69">Ver payload</button></td></tr>
+<div class="modal fade" id="evM69" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>subscription_cancelled</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      subscription_id: subscriptionId,
+      cancellation_reason: reason,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>subscription_started</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM70">Ver payload</button></td></tr>
+<div class="modal fade" id="evM70" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>subscription_started</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      subscription_id: subscriptionDetails.subscriptionId,
+      plan_name: subscriptionDetails.planName,
+      billing_cycle: subscriptionDetails.billingCycle,
+      amount: subscriptionDetails.amount,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>video_call_ended</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM71">Ver payload</button></td></tr>
+<div class="modal fade" id="evM71" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>video_call_ended</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      consultation_id: consultationId,
+      duration_minutes: duration,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>video_call_started</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM72">Ver payload</button></td></tr>
+<div class="modal fade" id="evM72" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>video_call_started</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      consultation_id: consultationId,
+      timestamp: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>video_played</code></td><td><code>frontend</code></td><td>Evento funcional del dominio; analitica del flujo asociado.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM73">Ver payload</button></td></tr>
+<div class="modal fade" id="evM73" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>video_played</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      video_title: videoTitle,
+      video_duration: videoDuration
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>ViewContent</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM74">Ver payload</button></td></tr>
+<div class="modal fade" id="evM74" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>ViewContent</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/composables/useFacebookPixel.js</code></p><pre><code>{
+      content_name: contentName,
+      value: parseFloat(value),
+      currency: currency,
+      content_type: &#x27;product&#x27;,
+      ...params
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>viewed_product</code></td><td><code>frontend</code></td><td>Interaccion UI/navegacion; comportamiento de interfaz durante sesion.</td><td><ul><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/views/Products/ProductDetails.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evM75">Ver payload</button></td></tr>
+<div class="modal fade" id="evM75" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload evento: <code>viewed_product</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/composables/useBrazeTracking.js</code></p><pre><code>{
+      email: product.email || &#x27;&#x27;,
+      sms: product.sms || &#x27;&#x27;,
+      product_name: product.name,
+      product_image: product.image || &#x27;&#x27;,
+      product_price: product.price,
+      product_url: product.url || window.location.href,
+      viewed_at: new Date().toISOString()
+    }</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+</tbody></table></div>
+<h2 class="mt-5">Tabla maestra de atributos</h2><div class="table-responsive"><table class="table table-bordered table-sm"><thead class="table-light"><tr><th>Atributo</th><th>Clasificacion</th><th>Significado / uso / contexto</th><th>Archivos de evidencia</th><th>Payload</th></tr></thead><tbody>
+<tr><td><code>changeUser</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Asocia sesion anonima con usuario identificado.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue</code></li><li><code>enhance.md/src/store/emdStore.js</code></li><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li><li><code>kwilthealth.com/src/store/userStore.js</code></li><li><code>kwilthealth.com/src/views/RegisterView.vue</code></li><li><code>kwilthealth.com/src/views/cart/RegisterCheckoutView.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM0">Ver payload</button></td></tr>
+<div class="modal fade" id="atM0" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>changeUser</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue</code></p><pre><code>for profile merging</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setCustomUserAttribute</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Actualiza atributo custom Braze.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerEmail.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/PhotoUpload.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerEmail.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerName.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li>... +4 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM1">Ver payload</button></td></tr>
+<div class="modal fade" id="atM1" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setCustomUserAttribute</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md/src/composables/useBrazeTracking.js</code></p><pre><code>key, value</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setDateOfBirth</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Actualiza fecha de nacimiento para elegibilidad/segmentacion.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM2">Ver payload</button></td></tr>
+<div class="modal fade" id="atM2" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setDateOfBirth</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></p><pre><code>year, month, day</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setEmail</code></td><td><div><code><s>mixed</s></code><br><small><code>backend</code></small></div></td><td>Actualiza email de usuario para identidad/comunicacion.</td><td><ul><li><code>enhance.md-version1/app/Helpers/Customer.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php</code></li><li><code>enhance.md-version1/app/Models/WebCustomer.php</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerEmail.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li>... +86 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM3">Ver payload</button></td></tr>
+<div class="modal fade" id="atM3" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setEmail</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>magento-emd/dev/tests/integration/testsuite/Magento/CheckoutAgreements/Model/Checkout/Plugin/GuestValidationTest.php</code></p><pre><code>null</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setFirstName</code></td><td><div><code><s>mixed</s></code><br><small><code>backend</code></small></div></td><td>Actualiza nombre para personalizacion.</td><td><ul><li><code>enhance.md-version1/app/Helpers/Customer.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php</code></li><li><code>enhance.md-version1/app/Models/WebCustomer.php</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li>... +9 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM4">Ver payload</button></td></tr>
+<div class="modal fade" id="atM4" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setFirstName</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue</code></p><pre><code>name</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setGender</code></td><td><div><code><s>mixed</s></code><br><small><code>backend</code></small></div></td><td>Actualiza genero para segmentacion.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li><code>enhance.md/src/composables/useBrazeTracking.js</code></li><li><code>kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue</code></li><li><code>magento-emd/app/code/Enhance/OrderProcessingQueue/Cron/CustomerUpdate.php</code></li><li><code>magento-emd/app/code/Ssmd/Customer/Model/PatientDataRepository.php</code></li><li><code>magento-emd/app/code/VirtualHub/UpdateCustomer/Model/UpdateCustomerDetails.php</code></li><li>... +22 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM5">Ver payload</button></td></tr>
+<div class="modal fade" id="atM5" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setGender</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>magento-emd/dev/tests/integration/testsuite/Magento/SalesRule/Model/Observer/AssignCouponDataAfterOrderCustomerAssignTest.php</code></p><pre><code>0</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setLastName</code></td><td><div><code><s>mixed</s></code><br><small><code>backend</code></small></div></td><td>Actualiza apellido para personalizacion.</td><td><ul><li><code>enhance.md-version1/app/Helpers/Customer.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php</code></li><li><code>enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php</code></li><li><code>enhance.md-version1/app/Models/WebCustomer.php</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li>... +9 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM6">Ver payload</button></td></tr>
+<div class="modal fade" id="atM6" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setLastName</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue</code></p><pre><code>name</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+<tr><td><code>setPhoneNumber</code></td><td><div><code><s>frontend</s></code><br><small><code>backend</code></small></div></td><td>Actualiza telefono de usuario para SMS/voice.</td><td><ul><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerPhone.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerPhone.vue</code></li><li><code>enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue</code></li><li><code>enhance.md-version1/resources/js/composables/useBrazeTracking.js</code></li><li><code>enhance.md-version1/src/composables/useBrazeTracking.js</code></li><li>... +4 archivos</li></ul></td><td><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atM7">Ver payload</button></td></tr>
+<div class="modal fade" id="atM7" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Payload atributo: <code>setPhoneNumber</code></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p class="small-note mb-2">Fuente: <code>enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue</code></p><pre><code>e164Phone</code></pre></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button></div></div></div></div>
+</tbody></table></div>
+<h2 class="mt-5">Tabla de sugerencias</h2>
+<div class="table-responsive">
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Sugerencia</th>
+        <th>Prioridad</th>
+        <th>Alcance</th>
+        <th>Impacto esperado</th>
+        <th>Implementacion sugerida</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Backend-first para eventos de negocio</td>
+        <td>Alta</td>
+        <td>Eventos como <code>add_to_cart</code>, <code>started_checkout</code>, <code>purchase</code>, <code>account_registered</code></td>
+        <td>Menos duplicados, mejor auditoria, control de PII</td>
+        <td>Frontend envia a API de telemetria; backend valida y publica a Braze via outbox</td>
+      </tr>
+      <tr>
+        <td>Conservar eventos UX en frontend</td>
+        <td>Alta</td>
+        <td><code>button_clicked</code>, <code>page_viewed</code>, <code>cart_viewed</code></td>
+        <td>No sobrecargar backend con señal puramente UI</td>
+        <td>Mantener en frontend con muestreo y throttling</td>
+      </tr>
+      <tr>
+        <td>Catalogo oficial de eventos versionado</td>
+        <td>Alta</td>
+        <td>Todo el ecosistema telemetry/Braze</td>
+        <td>Governance y consistencia semantica</td>
+        <td>Archivo <code>event_catalog.json</code> con owner, schema y estado</td>
+      </tr>
+      <tr>
+        <td>Schema estricto por evento</td>
+        <td>Alta</td>
+        <td>API de ingesta</td>
+        <td>Mejor calidad de datos y menos eventos inutiles</td>
+        <td>Validacion Pydantic/JSON Schema por <code>event_name</code></td>
+      </tr>
+      <tr>
+        <td>Idempotencia fuerte por <code>event_id</code></td>
+        <td>Alta</td>
+        <td>Ingesta + outbox</td>
+        <td>Evita doble conteo y errores de reintento</td>
+        <td>Unique index + dedupe key + politicas de retry</td>
+      </tr>
+      <tr>
+        <td>Atributos de usuario solo por backend</td>
+        <td>Alta</td>
+        <td><code>setEmail</code>, <code>setPhoneNumber</code>, <code>setCustomUserAttribute</code>, etc.</td>
+        <td>Perfil Braze consistente y seguro</td>
+        <td>Endpoint <code>/users/attributes</code> con allowlist y validaciones</td>
+      </tr>
+      <tr>
+        <td>Normalizar nombres de eventos</td>
+        <td>Media</td>
+        <td>Eventos duplicados por naming (<code>AddToCart</code> vs <code>add_to_cart</code>)</td>
+        <td>Reporteria limpia y comparabilidad</td>
+        <td>Canonical snake_case + tabla de alias de migracion</td>
+      </tr>
+      <tr>
+        <td>Separar analitica negocio vs observabilidad tecnica</td>
+        <td>Media</td>
+        <td>Eventos de debug/performance</td>
+        <td>Braze mas limpio, menor costo de ruido</td>
+        <td>Enviar tecnico a observabilidad (OTel/Sentry), no a Braze</td>
+      </tr>
+      <tr>
+        <td>CI quality gate para eventos nuevos</td>
+        <td>Media</td>
+        <td>Repos frontend/backend con tracking</td>
+        <td>Evita drift de tracking en el tiempo</td>
+        <td>Fail de CI si evento no existe en catalogo o rompe schema</td>
+      </tr>
+      <tr>
+        <td>KPIs operativos del pipeline</td>
+        <td>Media</td>
+        <td>Servicio telemetry</td>
+        <td>Visibilidad de salud end-to-end</td>
+        <td>Medir: ingest rate, retry rate, DLQ, p95 delivery latency</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>

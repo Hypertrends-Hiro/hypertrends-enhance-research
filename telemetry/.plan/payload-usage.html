@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Universal Payload Usage Guide</title>
+  <style>
+    body{font-family:Arial,sans-serif;line-height:1.45;margin:24px;max-width:1200px}
+    table{border-collapse:collapse;width:100%;margin:14px 0}
+    th,td{border:1px solid #ddd;padding:8px;vertical-align:top}
+    th{background:#f5f5f5}
+    code{background:#f2f2f2;padding:2px 4px;border-radius:4px}
+    pre{background:#111;color:#eee;padding:12px;border-radius:6px;overflow:auto}
+    pre code{background:transparent;color:inherit;padding:0;border-radius:0}
+    .ok{color:#1b5e20}
+    .warn{color:#b26a00}
+    .bad{color:#b71c1c}
+  </style>
+</head>
+<body>
+  <h1>Documentacion de uso: payload universal</h1>
+  <p>Esta guia explica por que existen <code>occurred_at</code>, <code>message_id</code>, datos de sesion y como usar el payload base sin obligar a todos los subsistemas a llenar todo.</p>
+
+  <h2>1) Respuesta corta</h2>
+  <ul>
+    <li><strong>No</strong>: no todos los subsistemas envian todo el payload.</li>
+    <li><strong>Si</strong>: todos envian la misma estructura base para mantener compatibilidad.</li>
+    <li><strong>Required minimo</strong>: <code>meta.message_id</code>, <code>meta.occurred_at</code>, <code>meta.source_system</code>, <code>event.name</code>, <code>event.time</code>.</li>
+  </ul>
+
+  <h2>2) Por que existe <code>occurred_at</code>?</h2>
+  <p><code>occurred_at</code> es el momento en que el evento ocurrio en el sistema origen, no el momento en que lo recibio el API.</p>
+  <table>
+    <tr><th>Escenario</th><th>Sin occurred_at</th><th>Con occurred_at</th></tr>
+    <tr><td>Cola/reintento</td><td class="bad">El evento parece mas reciente de lo real</td><td class="ok">Se conserva la hora real de negocio</td></tr>
+    <tr><td>Batch nocturno</td><td class="bad">Se distorsiona el funnel por hora</td><td class="ok">Se mantiene orden cronologico correcto</td></tr>
+    <tr><td>Latency / SLA</td><td class="bad">No puedes medir ingest delay</td><td class="ok">Puedes medir <code>received_at - occurred_at</code></td></tr>
+  </table>
+  <p><strong>New Date se usa</strong>, pero en el origen del evento. Si el frontend dispara el evento, hace <code>new Date().toISOString()</code> en ese instante y lo manda en <code>occurred_at</code>.</p>
+
+  <h2>3) Por que existe <code>message_id</code>?</h2>
+  <p>Para idempotencia. Si el mismo evento se reenvia (retry, timeout, doble click, red inestable), el backend no lo cuenta dos veces.</p>
+  <table>
+    <tr><th>Caso</th><th>Sin message_id</th><th>Con message_id</th></tr>
+    <tr><td>Retry automatico</td><td class="bad">Duplicas evento en Braze</td><td class="ok">El segundo intento se ignora como duplicado</td></tr>
+    <tr><td>Doble submit</td><td class="bad">Conversion inflada</td><td class="ok">Una sola escritura valida</td></tr>
+    <tr><td>Reproceso batch</td><td class="bad">Riesgo alto de doble contabilizacion</td><td class="ok">Reproceso seguro</td></tr>
+  </table>
+  <p><strong>Quien lo genera?</strong> El subsistema origen. Recomendado: UUIDv7.</p>
+  <p><strong>El otro sistema debe guardarlo?</strong> Idealmente si, para trazabilidad. Pero el requisito minimo es que lo envie; el servicio telemetry lo persiste y deduplica.</p>
+  <p><strong>Que pasa si se duplica?</strong> Si llega el mismo <code>message_id</code> + mismo tenant, el API responde <code>200/202</code> con estado <code>duplicate_ignored</code> (no error operativo) y no vuelve a publicar a Braze.</p>
+
+  <h2>4) Datos de sesion: cuando si, cuando no</h2>
+  <table>
+    <tr><th>Campo</th><th>Frontend web</th><th>Backend/cron</th><th>Uso</th></tr>
+    <tr><td><code>session.session_id</code></td><td>Required</td><td>Optional</td><td>Unir eventos de una misma sesion</td></tr>
+    <tr><td><code>session.page_url</code></td><td>Recommended</td><td>Optional</td><td>Contexto de navegacion</td></tr>
+    <tr><td><code>session.route</code></td><td>Recommended</td><td>Optional</td><td>Analitica por vista</td></tr>
+    <tr><td><code>session.user_agent</code></td><td>Optional</td><td>Optional</td><td>Debug de cliente/dispositivo</td></tr>
+    <tr><td><code>session.ip</code></td><td>Optional/Masked</td><td>Optional/Masked</td><td>Seguridad/fraude (segun compliance)</td></tr>
+  </table>
+  <p class="warn">No mandes PII innecesaria en session. Si se requiere IP, aplicar mascara/retencion corta segun politica.</p>
+
+  <h2>5) Contrato universal: Required / Conditional / Optional</h2>
+  <table>
+    <tr><th>Path</th><th>Nivel</th><th>Notas</th></tr>
+    <tr><td><code>meta.message_id</code></td><td>Required</td><td>UUIDv7 recomendado, base de idempotencia</td></tr>
+    <tr><td><code>meta.occurred_at</code></td><td>Required</td><td>Hora real de ocurrencia del evento</td></tr>
+    <tr><td><code>meta.source_system</code></td><td>Required</td><td>Origen: app/sistema emisor</td></tr>
+    <tr><td><code>event.name</code></td><td>Required</td><td>Debe existir en catalogo</td></tr>
+    <tr><td><code>event.time</code></td><td>Required</td><td>Normalmente igual a occurred_at</td></tr>
+    <tr><td><code>user.external_id</code> o <code>user.anonymous_id</code></td><td>Conditional</td><td>Al menos uno</td></tr>
+    <tr><td><code>event.properties</code></td><td>Conditional</td><td>Segun el evento</td></tr>
+    <tr><td><code>purchase.*</code></td><td>Conditional</td><td>Solo si <code>purchase.enabled=true</code></td></tr>
+    <tr><td><code>session.*</code></td><td>Optional/Recommended</td><td>Especialmente importante en frontend</td></tr>
+    <tr><td><code>user.attributes.*</code></td><td>Optional</td><td>Solo cuando exista update de perfil</td></tr>
+  </table>
+
+  <h2>6) Ejemplos practicos</h2>
+  <p class="warn"><strong>Por que a veces ves JSON “gordos”:</strong> en specs y tutoriales se suele pegar un cuerpo que incluye <code>user</code>, <code>session</code>, <code>purchase</code>, etc. para mostrar <em>donde van</em> esos campos si los necesitas — <strong>no</strong> significa que cada request lleve todo. Si solo necesitas registrar un evento, basta el minimo de abajo.</p>
+
+  <h3>0) Minimo valido (cualquier evento, p. ej. <code>video_call_ended</code>)</h3>
+  <p>Solo <code>meta</code> (3 campos obligatorios) + <code>event</code>. Sin <code>user</code>, sin <code>session</code>, sin <code>purchase</code>.</p>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b000",
+    "occurred_at": "2026-03-24T00:04:12.446Z",
+    "source_system": "mi-app-o-playground"
+  },
+  "event": {
+    "name": "video_call_ended",
+    "time": "2026-03-24T00:04:12.446Z",
+    "properties": {
+      "consultation_id": "c_123",
+      "duration_minutes": 12
+    }
+  }
+}</code></pre>
+
+  <h3>A) Frontend UX (page_viewed)</h3>
+  <p class="small-note" style="font-size:0.9em;color:#555">Incluye <code>user</code> y <code>session</code> porque este caso es navegacion web; siguen siendo opcionales a nivel API.</p>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b001",
+    "occurred_at": "2026-03-23T15:10:00Z",
+    "source_system": "kwilthealth.com",
+    "source_channel": "frontend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": { "anonymous_id": "anon_9f4..." },
+  "session": {
+    "session_id": "sess_abc",
+    "page_url": "https://app.example.com/checkout",
+    "route": "/checkout"
+  },
+  "event": {
+    "name": "page_viewed",
+    "time": "2026-03-23T15:10:00Z",
+    "properties": { "previous_page": "/cart" }
+  },
+  "purchase": { "enabled": false }
+}</code></pre>
+
+  <h3>B) Evento de negocio (started_checkout)</h3>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b002",
+    "occurred_at": "2026-03-23T15:12:10Z",
+    "source_system": "enhance.md-version1",
+    "source_channel": "frontend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": { "external_id": "magento_123" },
+  "event": {
+    "name": "started_checkout",
+    "time": "2026-03-23T15:12:10Z",
+    "properties": { "cart_total": 129.99, "items_count": 3 }
+  },
+  "purchase": { "enabled": false }
+}</code></pre>
+  <p>Este evento se genera en frontend, pero el publish final a Braze ocurre en backend.</p>
+
+  <h3>C) Purchase (compra real)</h3>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b003",
+    "occurred_at": "2026-03-23T15:13:45Z",
+    "source_system": "backend-orders",
+    "source_channel": "backend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": { "external_id": "magento_123" },
+  "event": {
+    "name": "purchase",
+    "time": "2026-03-23T15:13:45Z",
+    "properties": { "order_id": "1000123" }
+  },
+  "purchase": {
+    "enabled": true,
+    "product_id": "SKU-1",
+    "currency": "USD",
+    "price": 99.9,
+    "quantity": 1,
+    "properties": { "order_id": "1000123" }
+  }
+}</code></pre>
+
+  <h2>7) Checklist por subsistema</h2>
+  <ul>
+    <li>Generar <code>message_id</code> unico por evento.</li>
+    <li>Setear <code>occurred_at</code> al momento real de ocurrencia.</li>
+    <li>Enviar solo campos relevantes; no rellenar basura.</li>
+    <li>No poner PII en <code>event.properties</code>.</li>
+    <li>Si reintentas, reusar el mismo <code>message_id</code>.</li>
+  </ul>
+
+  <h2 id="atributos">8) Atributos: guia especifica</h2>
+  <p>Los atributos son estado de perfil (persistente), no eventos de actividad. Regla general: <strong>owner backend</strong>.</p>
+
+  <h3>8.1 Que atributos van por backend vs frontend</h3>
+  <table>
+    <tr><th>Atributo</th><th>Owner recomendado</th><th>Motivo</th></tr>
+    <tr><td><code>email</code></td><td>Backend</td><td>PII sensible, fuente de verdad en cuenta/CRM</td></tr>
+    <tr><td><code>phone</code></td><td>Backend</td><td>PII + formato/normalizacion + compliance</td></tr>
+    <tr><td><code>first_name</code>, <code>last_name</code></td><td>Backend</td><td>Consistencia de perfil multi-sistema</td></tr>
+    <tr><td><code>dob</code>, <code>gender</code></td><td>Backend</td><td>Datos sensibles/regulatorios</td></tr>
+    <tr><td><code>custom.*</code> (ej. <code>lifecycle_stage</code>)</td><td>Backend</td><td>Evitar drift semantico entre frontends</td></tr>
+    <tr><td><code>changeUser</code> / identify anon->known</td><td>Frontend (transitorio) + Backend (final)</td><td>Frontend conoce la sesion activa, backend consolida identidad</td></tr>
+  </table>
+
+  <h3>8.2 Reglas de oro para atributos</h3>
+  <ul>
+    <li>Actualizar solo en eventos de cambio real (no en cada page view).</li>
+    <li>Aplicar <code>allowlist</code> de atributos permitidos.</li>
+    <li>No sobrescribir con vacios/null salvo regla explicita.</li>
+    <li>Versionar cambios de semantica (<code>lifecycle_stage_v2</code> si rompe compatibilidad).</li>
+    <li>Registrar auditoria: quien cambio, cuando, valor anterior/nuevo.</li>
+  </ul>
+
+  <h3>8.3 Dedupe de atributos</h3>
+  <p>Para evitar writes repetidos:</p>
+  <ul>
+    <li>Usar <code>attribute_hash</code> (hash del subset de atributos enviados).</li>
+    <li>Si hash no cambia, responder <code>202 no_change</code> y no reenviar a Braze.</li>
+    <li>Guardar <code>last_attribute_update_at</code> por usuario.</li>
+  </ul>
+
+  <h3>8.4 Ejemplo: update de atributos en payload universal</h3>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b120",
+    "occurred_at": "2026-03-23T16:05:00Z",
+    "source_system": "account-service",
+    "source_channel": "backend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": {
+    "external_id": "magento_123",
+    "email": "user@example.com",
+    "phone": "+15551234567",
+    "attributes": {
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "custom": {
+        "lifecycle_stage": "active_checkout",
+        "intake_type": "weight_loss"
+      }
+    }
+  },
+  "event": {
+    "name": "user_attributes_updated",
+    "time": "2026-03-23T16:05:00Z",
+    "properties": {
+      "changed_fields": ["email", "phone", "lifecycle_stage", "intake_type"]
+    }
+  },
+  "purchase": { "enabled": false }
+}</code></pre>
+
+  <h3>8.5 Mapeo hacia Braze (attributes)</h3>
+  <pre><code>{
+  "attributes": [
+    {
+      "external_id": "magento_123",
+      "email": "user@example.com",
+      "phone": "+15551234567",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "lifecycle_stage": "active_checkout",
+      "intake_type": "weight_loss"
+    }
+  ]
+}</code></pre>
+
+  <h3>8.6 Que NO hacer con atributos</h3>
+  <ul>
+    <li>No guardar metricas de sesion como atributo persistente (ej. tiempo activo por visita).</li>
+    <li>No mandar atributos desde multiples frontends sin normalizacion central.</li>
+    <li>No duplicar eventos completos en atributos.</li>
+  </ul>
+</body>
+</html>

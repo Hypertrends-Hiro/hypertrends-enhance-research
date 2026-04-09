@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telemetry Robust Plan: Catalog + SystemCatalogConfig</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #111827;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #22c55e;
+        --border: #1f2937;
+        --code: #0b1220;
+      }
+      * { box-sizing: border-box; }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .page-shell {
+        max-width: 1320px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 28px 32px;
+        align-items: start;
+        padding: 0 20px 56px;
+      }
+      @media (max-width: 1024px) {
+        .page-shell {
+          grid-template-columns: 1fr;
+          padding: 0 16px 48px;
+        }
+      }
+      main.doc {
+        min-width: 0;
+      }
+      .wrap {
+        max-width: 100%;
+        margin: 0;
+        padding: 28px 0 0;
+      }
+      aside.toc {
+        position: sticky;
+        top: 16px;
+        padding-top: 28px;
+        padding-right: 8px;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+      }
+      @media (max-width: 1024px) {
+        aside.toc {
+          position: relative;
+          top: 0;
+          max-height: none;
+          overflow: visible;
+          padding-top: 16px;
+          padding-right: 0;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 12px;
+          margin-bottom: 0;
+        }
+      }
+      aside.toc .toc-title {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      aside.toc nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      aside.toc a {
+        display: block;
+        font-size: 12px;
+        line-height: 1.35;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 5px 8px;
+        margin-left: -8px;
+        border-radius: 6px;
+        border-left: 2px solid transparent;
+      }
+      aside.toc a:hover {
+        color: var(--text);
+        background: rgba(34, 197, 94, 0.08);
+      }
+      aside.toc a.toc-sub {
+        padding-left: 14px;
+        font-size: 11px;
+        color: #64748b;
+      }
+      aside.toc a.toc-sub:hover {
+        color: #cbd5e1;
+      }
+      h1[id], h2[id], h3[id] {
+        scroll-margin-top: 20px;
+      }
+      h1, h2, h3 { line-height: 1.2; margin: 0 0 10px; }
+      h1 { font-size: 30px; }
+      h2 { font-size: 22px; margin-top: 30px; }
+      h3 { font-size: 18px; margin-top: 20px; color: #d1d5db; }
+      p { margin: 8px 0 12px; color: #d1d5db; }
+      .intro {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px;
+      }
+      .badge {
+        display: inline-block;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #1f2937;
+        border: 1px solid #374151;
+        font-size: 12px;
+        color: #d1d5db;
+      }
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+      @media (min-width: 900px) {
+        .grid.two { grid-template-columns: 1fr 1fr; }
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+      ul, ol { margin: 8px 0 10px 22px; }
+      li { margin: 4px 0; }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.95em;
+        background: var(--code);
+        border: 1px solid #1f2937;
+        border-radius: 6px;
+        padding: 1px 6px;
+        color: #e2e8f0;
+      }
+      .ok { color: var(--accent); font-weight: 700; }
+      .table-like {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+      .table-like th, .table-like td {
+        border: 1px solid #243041;
+        padding: 8px 10px;
+        vertical-align: top;
+      }
+      .table-like th {
+        text-align: left;
+        color: #c7d2fe;
+        background: #101a2a;
+      }
+      .muted { color: var(--muted); }
+      pre.flow {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.35;
+        background: var(--code);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        color: #cbd5e1;
+        margin: 12px 0;
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="toc" aria-label="Índice de secciones">
+        <nav>
+          <div class="toc-title">En esta página</div>
+          <a href="#top">Inicio</a>
+          <a href="#sec-1">1) Objetivo</a>
+          <a href="#sec-2">2) Principios</a>
+          <a href="#sec-3">3) Alcance</a>
+          <a href="#sec-4">4) Seed JSON playground</a>
+          <a href="#sec-5">5) Modelo conceptual</a>
+          <a class="toc-sub" href="#sec-5-1">5.1 Catalog</a>
+          <a class="toc-sub" href="#sec-5-2">5.2 SystemCatalogConfig</a>
+          <a class="toc-sub" href="#sec-5-3">5.3 Audit trail</a>
+          <a href="#sec-6">6) Contratos API</a>
+          <a href="#sec-7">7) Reglas ingest</a>
+          <a href="#sec-8">8) Naming</a>
+          <a href="#sec-9">9) Admin API (Postman)</a>
+          <a href="#sec-10">10) Payload destino</a>
+          <a href="#sec-11">11) Implementación Braze+GA4</a>
+          <a class="toc-sub" href="#sec-11-1">11.1 Destinations JSON</a>
+          <a class="toc-sub" href="#sec-11-2">11.2 Componentes</a>
+          <a class="toc-sub" href="#sec-11-3">11.3 Fases A–D</a>
+          <a class="toc-sub" href="#sec-11-4">11.4 Miniflujo</a>
+          <a href="#sec-12">12) Roadmap</a>
+          <a href="#sec-13">13) Criterios</a>
+          <a href="#sec-14">14) Siguiente paso</a>
+        </nav>
+      </aside>
+      <main class="doc">
+    <div class="wrap">
+      <h1 id="top">Telemetry Robust Plan: Catalog + SystemCatalogConfig</h1>
+      <div class="intro">
+        <p>
+          Plan maestro para evolucionar <code>telemetry</code> a una plataforma robusta con
+          gobierno de eventos, control operativo por sistema y enrutamiento multidestino
+          (Braze, GA4 y futuros destinos).
+        </p>
+        <span class="badge">Catalog canónico</span>
+        <span class="badge">Config por sistema</span>
+        <span class="badge">PascalCase oficial</span>
+        <span class="badge">Admin vía API (Postman)</span>
+        <p class="muted" style="margin-top: 12px; margin-bottom: 0;">
+          Lista de tareas ejecutables:
+          <a href="tasks.html" style="color: #93c5fd">tasks.html</a>
+        </p>
+      </div>
+
+      <h2 id="sec-1">1) Objetivo</h2>
+      <ol>
+        <li><code>Catalog</code>: diccionario global de eventos (nombres canónicos + metadatos).</li>
+        <li><code>SystemCatalogConfig</code>: reglas operativas por sistema/tenant (enable, routing, mappers).</li>
+      </ol>
+      <p>
+        Esta separación evita mezclar semántica del evento con reglas de operación por aplicación.
+      </p>
+
+      <h2 id="sec-2">2) Principios de diseño</h2>
+      <ul>
+        <li><strong>Separación de responsabilidades</strong>: catálogo define “qué existe”; config define “cómo opera”.</li>
+        <li><strong>Nombre canónico único</strong>: todos los nuevos eventos en <code>PascalCase</code>.</li>
+        <li><strong>Ingest gobernado por datos</strong>: nada de reglas hardcodeadas.</li>
+        <li><strong>Trazabilidad total</strong>: toda decisión de ingest queda auditada.</li>
+        <li><strong>Compatibilidad evolutiva</strong>: aliases legacy permitidos durante migración.</li>
+      </ul>
+
+      <h2 id="sec-3">3) Alcance funcional</h2>
+      <div class="grid two">
+        <div class="card">
+          <h3>Incluye</h3>
+          <ul>
+            <li>API de <code>Catalog</code> y <code>SystemCatalogConfig</code>.</li>
+            <li>Validación en <code>POST /api/v1/telemetry/ingest</code> y <code>/ingest/batch</code>.</li>
+            <li>Resolución de nombres (canónico + aliases).</li>
+            <li>Routing por destino (Braze/GA4) por configuración.</li>
+            <li>Administración solo con <strong>HTTP</strong>: endpoints para <strong>alta en catálogo</strong> y para <strong>configuración por sistema</strong> (Postman, Insomnia, curl). Sin front dedicado.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>No incluye (fase futura)</h3>
+          <ul>
+            <li>Front de administración (React/Vue/etc.): el operador usa Postman u otro cliente HTTP.</li>
+            <li>Analytics UI avanzada.</li>
+            <li>Workflow complejo de aprobaciones.</li>
+            <li>Arquitectura multi-región active-active.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="sec-4">4) Seed de catálogo: playground normalizado (JSON)</h2>
+      <div class="card" style="margin-top: 12px;">
+        <p>
+          Fuente única de listas: <code>telemetry/.plan/braze-sdk-playground.html</code>
+          (<code>SDK_EVENT_NAMES</code> + <code>TELEMETRY_EVENT_NAMES</code>). Se genera un
+          contrato máquina-legible con nombres en <strong>PascalCase</strong>, aliases,
+          columnas donde apareció cada nombre, etiquetas de dominio (UX, negocio, clínica,
+          commerce, identidad, etc.) y pistas de forma para <strong>Braze</strong> vs
+          <strong>GA4</strong>.
+        </p>
+        <ul>
+          <li>
+            <strong>JSON:</strong>
+            <code>telemetry/.plan/playground-events-catalog.normalized.json</code>
+          </li>
+          <li>
+            <strong>Regenerar:</strong>
+            <code>python telemetry/scripts/gen_playground_events_catalog.py</code>
+            (desde la raíz del repo; o <code>python scripts/gen_playground_events_catalog.py</code>
+            desde <code>telemetry/</code>).
+          </li>
+        </ul>
+        <p class="muted" style="margin-bottom: 0;">
+          Cada ítem en <code>events[]</code> incluye <code>canonical_name</code>,
+          <code>aliases</code>, <code>domain_tags[]</code>,
+          <code>braze.primary_surface</code> (custom event, meta-standard name, purchase signal,
+          user attributes patch), <code>braze.rest_track_arrays_typically_used</code>
+          (<code>events</code> / <code>purchases</code> / <code>attributes</code>),
+          <code>ga4.measurement_protocol_shape_hint</code>, y si el nombre es de la familia
+          “standard” del playground (<code>meta_standard_event_name</code>). Caso extra:
+          <code>user_profile_patch</code> → <code>UserProfilePatch</code> (solo en JS del playground,
+          no en el array telemetry).
+        </p>
+      </div>
+
+      <table class="table-like" style="margin-top: 16px;">
+        <thead>
+          <tr>
+            <th>Braze (<code>primary_surface</code>)</th>
+            <th>Significado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>custom_event_domain</code></td>
+            <td>Evento de producto; REST <code>events[]</code> / Web <code>logCustomEvent</code>.</td>
+          </tr>
+          <tr>
+            <td><code>custom_event_meta_standard_name</code></td>
+            <td>Mismo transporte; nombre alineado a etiquetas tipo “standard” (AddToCart, PageView…).</td>
+          </tr>
+          <tr>
+            <td><code>purchase_revenue_signal</code></td>
+            <td>Compra/ingreso; el mapper puede usar <code>purchases[]</code> y/o evento con revenue.</td>
+          </tr>
+          <tr>
+            <td><code>user_attributes_patch</code></td>
+            <td>Perfil/atributos; REST <code>attributes[]</code> como superficie principal; evento opcional para auditoría.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 14px;">
+        Uso en implementación: <strong>Fase 0</strong> importa este JSON a tablas
+        <code>catalog_events</code> + <code>catalog_event_aliases</code>; la administración por API y
+        <code>SystemCatalogConfig</code> referencian siempre <code>canonical_name</code>.
+        Los emisores pueden seguir enviando strings legacy hasta migrar; el ingest resuelve alias → canónico.
+      </p>
+
+      <h2 id="sec-5">5) Modelo conceptual</h2>
+      <div class="grid two">
+        <div class="card">
+          <h3 id="sec-5-1">5.1 Catalog (global)</h3>
+          <ul>
+            <li><code>event_key</code> (UUID)</li>
+            <li><code>canonical_name</code> (único, PascalCase)</li>
+            <li><code>display_name</code>, <code>description</code>, <code>domain</code></li>
+            <li><code>lifecycle_status</code>: <code>active|deprecated|retired</code></li>
+            <li><code>aliases</code> (opcional, transición)</li>
+            <li>Auditoría: <code>created_at/by</code>, <code>updated_at/by</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 id="sec-5-2">5.2 SystemCatalogConfig (por sistema)</h3>
+          <ul>
+            <li><code>config_id</code> (UUID), <code>system_id</code>, <code>tenant</code></li>
+            <li><code>event_key</code> (FK a Catalog)</li>
+            <li><code>enabled</code>, <code>mode</code> (<code>allow|deny|shadow</code>)</li>
+            <li><code>destinations</code>: braze/ga4/warehouse</li>
+            <li><code>mappers</code>: <code>braze.mapper_version</code>, <code>ga4.mapper_version</code></li>
+            <li><code>validation_policy</code>, vigencia, auditoría</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <h3 id="sec-5-3">5.3 Ingest audit trail</h3>
+        <ul>
+          <li><code>message_id</code>, <code>original_event_name</code>, <code>canonical_event_name</code></li>
+          <li><code>system_id</code>, <code>tenant</code>, <code>source_channel</code></li>
+          <li><code>decision</code>: <code>forwarded|accepted_not_forwarded|rejected</code></li>
+          <li><code>decision_reason</code>, resultados por destino y timestamps</li>
+        </ul>
+      </div>
+
+      <h2 id="sec-6">6) Contratos API propuestos</h2>
+      <p>
+        Alcance acordado para administración: <strong>solo APIs</strong>, consumibles con Postman (u otro cliente HTTP).
+        No se incluye aplicación front ni paneles; toda la operación de alta de eventos y de configuración vive en estos endpoints.
+      </p>
+      <h3 style="margin-top: 16px;">6.1 MVP administración (Postman)</h3>
+      <table class="table-like">
+        <thead>
+          <tr>
+            <th>Área</th>
+            <th>Endpoints (mínimo viable)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Catálogo — nuevos eventos</strong></td>
+            <td>
+              <code>POST /api/v1/catalog/events</code> — crear evento canónico (PascalCase), metadatos y aliases opcionales en el body.<br />
+              <span class="muted">Opcional para operar con comodidad:</span>
+              <code>GET /api/v1/catalog/events</code> y
+              <code>GET /api/v1/catalog/events/{canonical_name}</code> (solo lectura, sin UI).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Configuración por sistema</strong></td>
+            <td>
+              <code>POST /api/v1/system-catalog-configs</code> — crear regla (sistema, tenant, evento, <code>enabled</code>, <code>destinations</code>, mappers).<br />
+              <code>PATCH /api/v1/system-catalog-configs/{config_id}</code> — actualizar toggles y routing sin redeploy.<br />
+              <span class="muted">Opcional:</span> <code>GET /api/v1/system-catalog-configs</code> con filtros (<code>system_id</code>, <code>tenant</code>, evento) para inspección en Postman.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>6.2 Ampliación futura (no bloquea MVP)</h3>
+      <p class="muted" style="margin-bottom: 8px;">
+        Si más adelante hace falta gobierno fino sin scripts: PATCH de catálogo, DELETE de aliases, activate/deactivate explícitos, etc.
+      </p>
+      <table class="table-like">
+        <thead>
+          <tr>
+            <th>Módulo</th>
+            <th>Endpoints adicionales (referencia)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Catalog</code></td>
+            <td>
+              <code>PATCH /api/v1/catalog/events/{canonical_name}</code>,
+              <code>POST/DELETE …/aliases</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Support</td>
+            <td><code>POST /api/v1/catalog/resolve</code> — probar resolución alias → canónico (QA).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="sec-7">7) Reglas de decisión en ingest</h2>
+      <ol>
+        <li>Validar envelope base (<code>meta</code>, <code>event</code>, <code>message_id</code>, <code>source_system</code>).</li>
+        <li>Resolver <code>event.name</code> (canónico o alias).</li>
+        <li>Buscar config por <code>(system_id, tenant, event_key)</code>.</li>
+        <li>Aplicar política (<code>enabled</code>, <code>mode</code>, destinos).</li>
+        <li>Transformar por destino: canónico -> Braze y canónico -> GA4.</li>
+        <li>Enviar, auditar y responder estado trazable.</li>
+      </ol>
+
+      <h2 id="sec-8">8) Política de naming</h2>
+      <ul>
+        <li><span class="ok">Oficial:</span> eventos nuevos en <code>PascalCase</code>.</li>
+        <li>Evitar prefijos técnicos en canónico (<code>backend_...</code>).</li>
+        <li>Origen técnico via metadata (<code>source_system</code>, <code>source_channel</code>).</li>
+        <li>Aliases legacy con fecha de retiro.</li>
+      </ul>
+      <p class="muted">
+        Ejemplos: <code>intake_incomplete -> IntakeIncomplete</code>,
+        <code>subscription_cancelled|subscription_canceled -> SubscriptionCanceled</code>.
+      </p>
+
+      <h2 id="sec-9">9) Administración vía API (sin front)</h2>
+      <p>
+        No hay producto UI de backoffice en el alcance. Operaciones y “toggles” se hacen con
+        <strong>Postman</strong> (o curl, Insomnia, etc.) contra los endpoints de la sección 6.
+      </p>
+      <div class="grid two">
+        <div class="card">
+          <h3>Qué cubre</h3>
+          <ul>
+            <li><strong>Catálogo</strong>: dar de alta nuevos eventos canónicos (<code>POST /catalog/events</code>).</li>
+            <li><strong>Configuración</strong>: crear y ajustar reglas por sistema/tenant/evento (<code>POST</code> / <code>PATCH</code> en <code>system-catalog-configs</code>) — ahí vive enable/disable y destinos Braze/GA4.</li>
+            <li><strong>Consulta</strong>: si hace falta verificar, usar los <code>GET</code> opcionales documentados en 6.1.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Seguridad y trazabilidad</h3>
+          <ul>
+            <li>API keys o auth de servicio en los endpoints de administración (no públicos como ingest en fase inicial si aplica).</li>
+            <li>Auditoría en servidor de quién cambió qué (cabecera de actor, API key id, o integración con IdP más adelante).</li>
+            <li>Monitoreo operativo (logs/métricas de ingest) sustituye pantallas de “operations” hasta que exista UI.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="sec-10">10) Payload por destino</h2>
+      <p>
+        Braze y GA4 deben recibir payloads finales distintos. El envelope canónico es único, la transformación es por destino.
+      </p>
+      <ul>
+        <li><code>canonical → braze</code>: cuerpo <strong>sparse</strong> para <code>/users/track</code> — solo claves con datos (<code>events</code>, y si aplica <code>purchases</code> y/o <code>attributes</code>).</li>
+        <li><code>canonical → ga4</code>: Measurement Protocol — <code>events[]</code> siempre que haya hit; compras como evento <code>purchase</code> + <code>params</code> ecommerce; perfil como <code>user_properties</code> / <code>user_id</code> cuando el mapper lo defina.</li>
+      </ul>
+      <p class="muted">
+        Regla de emisor: para un simple click no envíes bloques vacíos; omití <code>purchase</code> / <code>user.attributes</code> salvo que el contrato de ingest exija un default explícito (<code>purchase.enabled: false</code>).
+      </p>
+
+      <h2 id="sec-11">11) Plan de implementación: Braze + GA4 gobernados por config</h2>
+      <p>
+        Objetivo: una sola ingesta, dos (o más) destinos opcionales, cada uno encendido o apagado por
+        <code>SystemCatalogConfig</code>, con mappers versionados y payloads de salida mínimos (sin arrays vacíos).
+      </p>
+
+      <h3 id="sec-11-1">11.1 Forma de <code>SystemCatalogConfig.destinations</code> (propuesta)</h3>
+      <pre class="flow">{
+  "braze": {
+    "enabled": true,
+    "mapper_version": "braze_track_v1",
+    "options": { "endpoint_env": "BRAZE_REST_ENDPOINT" }
+  },
+  "ga4": {
+    "enabled": true,
+    "mapper_version": "ga4_mp_v1",
+    "options": {
+      "measurement_id": "G-XXXX",   // o por tenant / secret
+      "api_secret_ref": "GA4_MP_SECRET_KWT"
+    }
+  }
+}</pre>
+
+      <h3 id="sec-11-2">11.2 Componentes a implementar</h3>
+      <ol>
+        <li><strong>Resolver</strong>: <code>event.name</code> → <code>canonical_name</code> (alias table + case rules).</li>
+        <li><strong>Policy loader</strong>: lee config por <code>(system_id, tenant, canonical_name)</code> con cache TTL (ej. Redis o in-process + invalidación).</li>
+        <li><strong>Dispatcher</strong>: si <code>enabled</code> global del evento es falso → auditar y cortar; si true → iterar destinos con <code>destinations.*.enabled</code>.</li>
+        <li><strong>Mapper registry</strong>: <code>braze_track_v1</code>, <code>ga4_mp_v1</code> — entrada: envelope + catalog row (primary_surface hints) + config options; salida: payload listo para HTTP.</li>
+        <li><strong>Braze client</strong>: construye JSON sparse; solo incluye <code>events</code>, <code>purchases</code>, <code>attributes</code> si el mapper devolvió contenido no vacío.</li>
+        <li><strong>GA4 MP client</strong>: un request puede llevar <code>events</code> + opcionalmente <code>user_properties</code>; compras = evento <code>purchase</code> con <code>params</code> estándar.</li>
+        <li><strong>Audit store</strong>: por <code>message_id</code>: decisión, destinos intentados, HTTP status / error corto por destino, timestamps.</li>
+        <li><strong>Respuesta al cliente</strong>: agregado (ej. <code>destinations: { braze: "ok 201", ga4: "skipped_disabled" }</code>) sin filtrar secretos.</li>
+      </ol>
+
+      <h3 id="sec-11-3">11.3 Fases técnicas (dual destination)</h3>
+      <ul>
+        <li><strong>Fase A</strong>: Modelo DB + CRUD config; seed Braze como hoy; feature flag <code>ga4.enabled</code> default off.</li>
+        <li><strong>Fase B</strong>: Integrar resolver + policy en <code>/ingest</code>; Braze detrás de config (no enviar si <code>destinations.braze.enabled</code> es false).</li>
+        <li><strong>Fase C</strong>: Mapper GA4 v1 + cliente MP + secretos por entorno; métricas por destino.</li>
+        <li><strong>Fase D</strong> (robustez): outbox + worker + reintentos por destino; dead-letter si falla permanente.</li>
+      </ul>
+
+      <h3 id="sec-11-4">11.4 Miniflujo (texto)</h3>
+      <pre class="flow">┌─────────────────────────────────────────────────────────────────┐
+│  Cliente / SPA / backend → POST /api/v1/telemetry/ingest         │
+│  (envelope mínimo: meta + event; purchase/attributes solo si aplica) │
+└───────────────────────────────┬─────────────────────────────────┘
+                                ▼
+                    ┌───────────────────────┐
+                    │ Validar envelope base │
+                    │ (message_id, event…)   │
+                    └───────────┬───────────┘
+                                ▼
+                    ┌───────────────────────┐
+                    │ Resolver nombre       │
+                    │ alias → canonical     │
+                    └───────────┬───────────┘
+                                ▼
+              ┌─────────────────┴─────────────────┐
+              │ ¿Existe en Catalog?               │
+              └─────────┬───────────────┬─────────┘
+                   no   │               │ sí
+                        ▼               ▼
+                 [rejected o        ┌────────────────────────┐
+                  shadow_log]        │ Cargar SystemCatalog    │
+                                     │ Config (system+tenant+  │
+                                     │ canonical)              │
+                                     └───────────┬────────────┘
+                                                 ▼
+                                     ┌───────────────────────┐
+                                     │ ¿event enabled?       │
+                                     └─────────┬─────────────┘
+                                          no   │        sí
+                                               ▼         ▼
+                                    [audit:          ┌─────────────────────┐
+                                     not_forwarded]  │ Dispatcher destinos │
+                                                    └──────────┬──────────┘
+                                                               ▼
+                              ┌────────────────────────────────┴────────────────────────────┐
+                              │                                                             │
+                              ▼                                                             ▼
+                    ┌──────────────────┐                                          ┌──────────────────┐
+                    │ braze.enabled?   │                                          │ ga4.enabled?     │
+                    │ mapper_braze →   │                                          │ mapper_ga4 →     │
+                    │ POST /users/track│                                          │ POST MP collect  │
+                    │ (sparse body)    │                                          │ (sparse JSON)    │
+                    └────────┬─────────┘                                          └────────┬─────────┘
+                             │                                                            │
+                             └──────────────────────┬─────────────────────────────────────┘
+                                                    ▼
+                                         ┌─────────────────────┐
+                                         │ Audit por destino   │
+                                         │ + respuesta al      │
+                                         │ emisor (agregada)   │
+                                         └─────────────────────┘</pre>
+
+      <h2 id="sec-12">12) Roadmap</h2>
+      <div class="grid two">
+        <div class="card">
+          <h3>Fase 0 (2-3 días)</h3>
+          <ul>
+            <li>Tablas base y validadores PascalCase.</li>
+            <li>Seed desde <code>playground-events-catalog.normalized.json</code> (regenerable con el script).</li>
+          </ul>
+          <h3>Fase 1 (4-6 días)</h3>
+          <ul>
+            <li>APIs mínimas: <code>POST /catalog/events</code> + <code>POST/PATCH</code> (y <code>GET</code> opcional) de <code>system-catalog-configs</code>.</li>
+            <li>Auth en rutas de admin + auditoría de cambios; documentar colección Postman.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Fase 2 (4-6 días)</h3>
+          <ul>
+            <li>Ingest gobernado por catálogo/config (incl. toggles <code>destinations.braze</code> / <code>destinations.ga4</code>).</li>
+            <li>Estados estándar de respuesta y notas por destino.</li>
+          </ul>
+          <h3>Fase 3-4 (8-13 días)</h3>
+          <ul>
+            <li>Mappers versionados Braze + GA4 MP; payloads sparse; secretos por entorno/tenant.</li>
+            <li>Outbox/reintentos opcional; endpoints admin estables y colección Postman mantenida.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 id="sec-13">13) Criterios de aceptación</h2>
+      <ol>
+        <li>Solo se envía a destino si existe en catálogo y está habilitado en config de sistema.</li>
+        <li>Naming canónico PascalCase + resolución por aliases legacy.</li>
+        <li>Toda ingest deja rastro auditable de decisión.</li>
+        <li>Activar/desactivar y routing por destino se hace vía API de configuración, sin despliegue ni UI propia.</li>
+        <li>Braze y GA4 reciben payload transformado según config vigente (cada uno puede estar off sin afectar al otro).</li>
+        <li>Salida a Braze/GA4 es <strong>sparse</strong>: no se envían claves o arrays vacíos “por completar el contrato”.</li>
+      </ol>
+
+      <h2 id="sec-14">14) Siguiente paso inmediato</h2>
+      <ol>
+        <li>Aprobar este diseño.</li>
+        <li>Revisar y congelar <code>playground-events-catalog.normalized.json</code> como baseline de canónicos.</li>
+        <li>Crear seeds de <code>Catalog</code> + <code>SystemCatalogConfig</code> para sistemas críticos (import JSON).</li>
+        <li>Ejecutar Fase 0 y Fase 1 en el próximo sprint.</li>
+      </ol>
+    </div>
+      </main>
+    </div>
+  </body>
+</html>

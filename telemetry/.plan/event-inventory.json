@@ -1,0 +1,993 @@
+{
+  "files_scanned": 14296,
+  "event_count": 116,
+  "events": {
+    "login_attempted": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/LoginView.vue",
+      "kwilthealth.com/src/views/cart/LoginCheckoutView.vue"
+    ],
+    "login_success": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/cart/LoginCheckoutView.vue"
+    ],
+    "login_failed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/LoginView.vue",
+      "kwilthealth.com/src/views/cart/LoginCheckoutView.vue"
+    ],
+    "registration_started": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "registration_completed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "password_reset_requested": [
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "intake_started": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/IntakeFormRenderer.vue"
+    ],
+    "intake_step_completed": [
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "intake_completed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "intake_abandoned": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "button_clicked": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "order_placed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/cart/CheckoutView.vue"
+    ],
+    "order_completed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "order_cancelled": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "subscription_started": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "subscription_cancelled": [
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "payment_successful": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "payment_failed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "appointment_booked": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "appointment_cancelled": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "video_call_started": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "video_call_ended": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "message_sent": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js"
+    ],
+    "search_performed": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "event_name": [
+      "enhance.md-version1/resources/js/plugins/braze.js",
+      "enhance.md-version1/src/plugins/braze.js",
+      "enhance.md/src/plugins/braze.js",
+      "kwilthealth.com/src/plugins/braze.js"
+    ],
+    "page_viewed": [
+      "enhance.md/src/router/index.js",
+      "kwilthealth.com/src/router/index.js"
+    ],
+    "coupon_applied": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutSummaryEmd.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Slide/CheckoutSummaryEmd.vue",
+      "kwilthealth.com/src/views/cart/CartView.vue"
+    ],
+    "logged_into_portal": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/LoginView.vue"
+    ],
+    "intake_step_complete": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js"
+    ],
+    "add_to_cart": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/Payment.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/SelectMedication.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserCartDetails.vue",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/Products/ProductDetails.vue"
+    ],
+    "eligibility_denied": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "kwilthealth.com/src/views/cart/CheckoutView.vue"
+    ],
+    "photo_uploaded": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/PhotoUpload.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "started_checkout": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/Payment.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserCheckout.vue",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/cart/CartView.vue",
+      "kwilthealth.com/src/views/cart/CheckoutView.vue"
+    ],
+    "payment_method_updated": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/Payment.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserPaymentAddress.vue"
+    ],
+    "purchase": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue"
+    ],
+    "referral_redeemed": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "payment_method_save_failed": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/UserPaymentAddress.vue"
+    ],
+    "password_reset_request": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/MyAccount/ForgotPassword.vue",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "account_registered": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "subscription_canceled": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js"
+    ],
+    "photo_incomplete": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "referral_started": [
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "PageView": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "Purchase": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "AddToCart": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "ViewContent": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "InitiateCheckout": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "AddPaymentInfo": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "CompleteRegistration": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "Lead": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "Subscribe": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "SubmitApplication": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "Search": [
+      "enhance.md-version1/resources/js/composables/useFacebookPixel.js"
+    ],
+    "viewed_product": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/views/Products/ProductDetails.vue"
+    ],
+    "remove_from_cart": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "video_played": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "appointment_scheduled": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "appointment_rescheduled": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "missed_appointment": [
+      "kwilthealth.com/src/composables/useBrazeTracking.js"
+    ],
+    "assessment_slide_submitted": [
+      "kwilthealth.com/src/composables/useIntakeSubmission.js"
+    ],
+    "membership_payment_attempted": [
+      "kwilthealth.com/src/views/MembershipPayment.vue"
+    ],
+    "membership_payment_completed": [
+      "kwilthealth.com/src/views/MembershipPayment.vue"
+    ],
+    "membership_payment_failed": [
+      "kwilthealth.com/src/views/MembershipPayment.vue"
+    ],
+    "password_reset_failed": [
+      "kwilthealth.com/src/views/LoginView.vue"
+    ],
+    "registration_attempted": [
+      "kwilthealth.com/src/views/RegisterView.vue",
+      "kwilthealth.com/src/views/cart/RegisterCheckoutView.vue"
+    ],
+    "registration_failed": [
+      "kwilthealth.com/src/views/RegisterView.vue",
+      "kwilthealth.com/src/views/cart/RegisterCheckoutView.vue"
+    ],
+    "add_to_cart_success": [
+      "kwilthealth.com/src/views/Products/ProductDetails.vue"
+    ],
+    "add_to_cart_failed": [
+      "kwilthealth.com/src/views/Products/ProductDetails.vue"
+    ],
+    "comprehensive_panel_added": [
+      "kwilthealth.com/src/views/Products/ProductDetails.vue"
+    ],
+    "product_listing_viewed": [
+      "kwilthealth.com/src/views/Products/ProductListing.vue"
+    ],
+    "cart_viewed": [
+      "kwilthealth.com/src/views/cart/CartView.vue"
+    ],
+    "order_attempted": [
+      "kwilthealth.com/src/views/cart/CheckoutView.vue"
+    ],
+    "order_failed": [
+      "kwilthealth.com/src/views/cart/CheckoutView.vue"
+    ],
+    "address_saved": [
+      "kwilthealth.com/src/views/cart/AddAddressForm.vue"
+    ],
+    "intake_slide_viewed": [
+      "kwilthealth.com/src/intake-form-renderer/IntakeFormRenderer.vue"
+    ],
+    "intake_received": [
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue"
+    ],
+    "intake_incomplete": [
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue"
+    ],
+    "registration_success": [
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue"
+    ],
+    "custom_event_name": [
+      "kwilthealth.com/docs/BRAZE_IMPLEMENTATION.md"
+    ],
+    "backend_cartitemrepositoryplugin": [
+      "magento-kwt/app/code/Enhance/Braze/Plugin/CartItemRepositoryPlugin.php"
+    ],
+    "backend_shippinginformationmanagementplugin": [
+      "magento-kwt/app/code/Enhance/Braze/Plugin/ShippingInformationManagementPlugin.php"
+    ],
+    "backend_couponmanagementplugin": [
+      "magento-kwt/app/code/Enhance/Braze/Plugin/CouponManagementPlugin.php"
+    ],
+    "backend_reviewsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Review/ReviewSaveAfter.php"
+    ],
+    "backend_emailsendafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Email/EmailSendAfter.php"
+    ],
+    "backend_._emailsendafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Email/._EmailSendAfter.php"
+    ],
+    "backend_._orderplaceafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Sales/._OrderPlaceAfter.php"
+    ],
+    "backend_ordersaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Sales/OrderSaveAfter.php"
+    ],
+    "backend_._ordersaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Sales/._OrderSaveAfter.php"
+    ],
+    "backend_orderplaceafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Sales/OrderPlaceAfter.php"
+    ],
+    "backend_subscriptionstatuschange": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/SubscriptionStatusChange.php"
+    ],
+    "backend_._subscriptionstatuschange": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/._SubscriptionStatusChange.php"
+    ],
+    "backend_subscriptiongeneratesaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/SubscriptionGenerateSaveAfter.php"
+    ],
+    "backend_paymentfailed": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/PaymentFailed.php",
+      "magento-kwt/app/code/Enhance/Braze/Observer/Checkout/PaymentFailed.php"
+    ],
+    "backend_._subscriptionsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/._SubscriptionSaveAfter.php"
+    ],
+    "backend_subscriptionsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Subscription/SubscriptionSaveAfter.php"
+    ],
+    "backend_addproduct": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Wishlist/AddProduct.php"
+    ],
+    "backend_removeproduct": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Wishlist/RemoveProduct.php"
+    ],
+    "backend_productdeleteafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Catalog/ProductDeleteAfter.php"
+    ],
+    "backend_productsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Catalog/ProductSaveAfter.php"
+    ],
+    "backend_._registersuccess": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/._RegisterSuccess.php"
+    ],
+    "backend_saveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/SaveAfter.php"
+    ],
+    "backend_passwordreset": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/PasswordReset.php"
+    ],
+    "backend_._addresssaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/._AddressSaveAfter.php"
+    ],
+    "backend_login": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/Login.php"
+    ],
+    "backend_registersuccess": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/RegisterSuccess.php"
+    ],
+    "backend_._saveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/._SaveAfter.php"
+    ],
+    "backend_addresssaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Customer/AddressSaveAfter.php"
+    ],
+    "backend_subscribersaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Newsletter/SubscriberSaveAfter.php"
+    ],
+    "backend_cardsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Tokenbase/CardSaveAfter.php"
+    ],
+    "backend_._cardsaveafter": [
+      "magento-kwt/app/code/Enhance/Braze/Observer/Tokenbase/._CardSaveAfter.php"
+    ],
+    "backend_checkexpiringcards": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/CheckExpiringCards.php"
+    ],
+    "backend_checkstorecredit": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/CheckStoreCredit.php"
+    ],
+    "backend_syncorderstobraze": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/SyncOrdersToBraze.php"
+    ],
+    "backend_ordershipped": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/OrderShipped.php"
+    ],
+    "backend_checkupcomingrenewals": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/CheckUpcomingRenewals.php"
+    ],
+    "backend_syncsubscriptionstobraze": [
+      "magento-kwt/app/code/Enhance/Braze/Cron/SyncSubscriptionsToBraze.php"
+    ]
+  },
+  "user_attributes": {
+    "changeUser": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue",
+      "enhance.md-version1/resources/js/plugins/braze.js",
+      "enhance.md/src/store/emdStore.js",
+      "kwilthealth.com/docs/BRAZE_TESTING_GUIDE.md",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "kwilthealth.com/src/store/userStore.js",
+      "kwilthealth.com/src/views/RegisterView.vue",
+      "kwilthealth.com/src/views/cart/RegisterCheckoutView.vue"
+    ],
+    "setEmail": [
+      "enhance.md-version1/app/Helpers/Customer.php",
+      "enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php",
+      "enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php",
+      "enhance.md-version1/app/Models/WebCustomer.php",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerEmail.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerEmail.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "enhance.md/src/store/emdStore.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "kwilthealth.com/src/store/userStore.js",
+      "magento-emd/app/code/LegacySubscription/Subscriptions/Helper/Data.php",
+      "magento-emd/app/code/M1Subscription/Orders/Helper/Data.php",
+      "magento-emd/app/code/ParadoxLabs/Subscriptions/Observer/GenerateSubscriptionsObserver.php",
+      "magento-emd/app/code/ParadoxLabs/TokenBase/Helper/Data.php",
+      "magento-emd/app/code/ParadoxLabs/TokenBase/Model/Card.php",
+      "magento-emd/app/code/RestApi/Signup/Model/Auth.php",
+      "magento-emd/dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Api/Data/FakeCustomerInterface.php",
+      "magento-emd/dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/Data/FakeCustomer.php",
+      "magento-emd/dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/FakeCustomer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Captcha/Observer/ResetAttemptForFrontendObserverTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Captcha/_files/dummy_user.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Catalog/Controller/Product/CompareTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/Model/ShippingInformationManagementTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/Plugin/Model/Quote/ResetQuoteAddressesTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/customer_quote_ready_for_order.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/quote_with_not_visible_individually_product.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/quote_with_simple_product_saved.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/quote_with_taxable_product_and_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/quote_with_virtual_product_and_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Checkout/_files/quote_with_virtual_product_saved.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/CheckoutAgreements/Model/Checkout/Plugin/GuestValidationTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/ConfigurableProduct/_files/quote_with_configurable_product_last_variation.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Block/Adminhtml/Edit/Tab/View/PersonalInfoTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Block/Adminhtml/Edit/Tab/ViewTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Controller/AccountTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Fixtures/customer_sec_website.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Model/EmailNotificationTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Model/ResourceModel/CustomerRepositoryTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Model/ResourceModel/Grid/CollectionTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_confirmation_email_address_with_special_chars.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_for_second_website.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_from_repository.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_no_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_no_password.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_non_default_website_id.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_one_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_rp_token.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_with_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_with_uk_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_without_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/five_repository_customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customer_with_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customers_for_address_import.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/inactive_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/new_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/three_customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/twenty_one_customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/two_customers.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/two_customers_with_different_customer_groups.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/unconfirmed_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/CustomerImportExport/_files/two_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Newsletter/Model/Plugin/PluginTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Newsletter/Model/SubscriberTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Persistent/Model/Checkout/GuestPaymentInformationManagementPluginTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Sales/Api/OrderCustomerDelegateInterfaceTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Sales/Model/Order/AddressTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Sales/_files/address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/SalesRule/Model/Observer/AssignCouponDataAfterOrderCustomerAssignTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Signifyd/_files/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Tax/Model/Sales/Total/Quote/SetupUtil.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/User/Model/UserTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/User/_files/dummy_user.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/User/_files/locked_users.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/User/_files/user_with_custom_role.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/User/_files/user_with_role.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Vault/_files/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Webapi/_files/webapi_user.php",
+      "magento-emd/setup/src/Magento/Setup/Console/Command/AdminUserCreateCommand.php",
+      "magento-emd/setup/src/Magento/Setup/Fixtures/AdminUsersFixture.php",
+      "magento-kwt/app/code/ParadoxLabs/Subscriptions/Observer/GenerateSubscriptionsObserver.php",
+      "magento-kwt/app/code/ParadoxLabs/TokenBase/Helper/Data.php",
+      "magento-kwt/app/code/ParadoxLabs/TokenBase/Model/Card.php",
+      "magento-kwt/app/code/RestApi/Signup/Model/Auth.php"
+    ],
+    "setFirstName": [
+      "enhance.md-version1/app/Helpers/Customer.php",
+      "enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php",
+      "enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php",
+      "enhance.md-version1/app/Models/WebCustomer.php",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerName.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "enhance.md/src/store/emdStore.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "kwilthealth.com/src/store/userStore.js",
+      "magento-emd/setup/src/Magento/Setup/Fixtures/AdminUsersFixture.php"
+    ],
+    "setLastName": [
+      "enhance.md-version1/app/Helpers/Customer.php",
+      "enhance.md-version1/app/Http/Controllers/Admin/ImpersonationController.php",
+      "enhance.md-version1/app/Http/Controllers/Magento/MagentoAuth.php",
+      "enhance.md-version1/app/Models/WebCustomer.php",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerName.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "enhance.md/src/store/emdStore.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "kwilthealth.com/src/store/userStore.js",
+      "magento-emd/setup/src/Magento/Setup/Fixtures/AdminUsersFixture.php"
+    ],
+    "setCustomUserAttribute": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerEmail.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerName.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/PhotoUpload.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerEmail.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerName.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue"
+    ],
+    "setPhoneNumber": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/B2C/IntakeCustomerPhone.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/CustomerPhone.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/LoginRegister.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "kwilthealth.com/src/store/userStore.js"
+    ],
+    "setGender": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue",
+      "magento-emd/app/code/Enhance/OrderProcessingQueue/Cron/CustomerUpdate.php",
+      "magento-emd/app/code/Ssmd/Customer/Model/PatientDataRepository.php",
+      "magento-emd/app/code/VirtualHub/UpdateCustomer/Model/UpdateCustomerDetails.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/Fixtures/customer_sec_website.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_confirmation_email_address_with_special_chars.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_for_second_website.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_from_repository.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_no_password.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_one_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_with_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_with_uk_address.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/customer_without_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customer_with_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/import_export/customers_for_address_import.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/new_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Customer/_files/unconfirmed_customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/CustomerImportExport/_files/two_addresses.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Sales/Api/OrderCustomerDelegateInterfaceTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/SalesRule/Model/Observer/AssignCouponDataAfterOrderCustomerAssignTest.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Signifyd/_files/customer.php",
+      "magento-emd/dev/tests/integration/testsuite/Magento/Vault/_files/customer.php",
+      "magento-kwt/app/code/Ssmd/Customer/Model/PatientDataRepository.php",
+      "magento-kwt/app/code/VirtualHub/UpdateCustomer/Model/UpdateCustomerDetails.php"
+    ],
+    "setDateOfBirth": [
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/MedicalInformation.vue",
+      "enhance.md-version1/resources/js/components/themes/Amaze/CheckoutEmd/Slide/OrderConfirmation.vue",
+      "enhance.md-version1/resources/js/composables/useBrazeTracking.js",
+      "enhance.md-version1/src/composables/useBrazeTracking.js",
+      "enhance.md/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/composables/useBrazeTracking.js",
+      "kwilthealth.com/src/intake-form-renderer/LiveFormPreview.vue"
+    ]
+  },
+  "braze_endpoints": [
+    [
+      "https://js.appboycdn.com/web-sdk/5.4/braze.min.js",
+      "enhance.md-version1/resources/js/plugins/braze.js"
+    ],
+    [
+      "https://js.appboycdn.com/web-sdk/5.4/braze.min.js",
+      "enhance.md-version1/src/plugins/braze.js"
+    ],
+    [
+      "https://js.appboycdn.com/web-sdk/5.4/braze.min.js",
+      "enhance.md/src/plugins/braze.js"
+    ],
+    [
+      "https://js.appboycdn.com/web-sdk/5.4/braze.min.js",
+      "kwilthealth.com/src/plugins/braze.js"
+    ],
+    [
+      "https://rest.fra-01.braze.eu",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.fra-01.braze.eu",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "kwilthealth.com/src/main.js"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-emd/app/code/Enhance/Braze/INSTALLATION_INSTRUCTIONS.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-emd/app/code/Enhance/Braze/README.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-emd/app/code/Enhance/Braze/etc/adminhtml/system.xml"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/INSTALLATION_INSTRUCTIONS.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/README.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/etc/adminhtml/system.xml"
+    ],
+    [
+      "https://rest.iad-01.braze.com",
+      "microservices/shared/braze/client.go"
+    ],
+    [
+      "https://rest.iad-01.braze.com/users/delete",
+      "magento-emd/custom-scripts/magento_delete_test_users.php"
+    ],
+    [
+      "https://rest.iad-01.braze.com/users/track",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com/users/track",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com/users/track",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com/users/track",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-01.braze.com</rest_endpoint>",
+      "magento-emd/app/code/Enhance/Braze/etc/config.xml"
+    ],
+    [
+      "https://rest.iad-01.braze.com</rest_endpoint>",
+      "magento-kwt/app/code/Enhance/Braze/etc/config.xml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-emd/custom-scripts/braze_cron_job.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-emd/custom-scripts/braze_helpers/BrazeConfig.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-emd/custom-scripts/braze_sync_by_email.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_MODULE_REVIEW_AND_FIXES.md"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-kwt/custom-scripts/appointment_missed.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "magento-kwt/custom-scripts/results_ready_to_braze.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/emd-consultation/cloudbuild.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/emd-consultation/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-braze/cloudbuild.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-intake/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-intake/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-lab-ai/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-myaccount/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-order/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-order/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-scheduler/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-scheduler/cloudbuild.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-scheduler/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com",
+      "microservices/kwilt-upload-service/pkg/braze/client.go"
+    ],
+    [
+      "https://rest.iad-02.braze.com)",
+      "magento-emd/custom-scripts/braze_sync_by_email.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com,KWILT_LAB_AI_URL=https://kwilt-lab-ai-396730550724.us-central1.run.app",
+      "microservices/kwilt-order/cloudbuild.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com,KWILT_MAGENTO_SCHEMA=kwilt_magento_prod,EMD_MAGENTO_SCHEMA=magento_emd_prod",
+      "microservices/emd-consultation/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com,OPENAI_API_KEY=REDACTED,VIDEO_SERVICE_URL=https://kt-video-manager-uzcdfx563q-uc.a.run.app,STORAGE_BUCKET_NAME=kwilt_customer_upload",
+      "microservices/kwilt-lab-ai/cloudbuild.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com,VIDEO_SERVICE_URL=https://kt-video-manager-uzcdfx563q-uc.a.run.app,STORAGE_BUCKET_NAME=kwilt-customer-upload-prod",
+      "microservices/kwilt-lab-ai/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://rest.iad-02.braze.com/users/delete",
+      "magento-emd/custom-scripts/magento_delete_test_users.php"
+    ],
+    [
+      "https://rest.iad-02.braze.com/users/delete",
+      "magento-emd/delete_test_users.php"
+    ],
+    [
+      "https://rest.iad-05.braze.com",
+      "magento-emd/custom-scripts/braze_get_user.php"
+    ],
+    [
+      "https://rest.iad-XX.braze.com\\n",
+      "magento-emd/custom-scripts/braze_get_user.php"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "enhance.md-version1/.env"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "enhance.md-version1/resources/js/appemdamaze.js"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "enhance.md-version1/resources/js/appssmdamaze.js"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "enhance.md/.env"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "enhance.md/src/main.js"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "kwilthealth.com/.env"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "kwilthealth.com/cloudbuild-prod.yaml"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "kwilthealth.com/cloudbuild.yaml"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "kwilthealth.com/docs/BRAZE_IMPLEMENTATION.md"
+    ],
+    [
+      "https://sdk.iad-02.braze.com",
+      "kwilthealth.com/docs/BRAZE_TESTING_GUIDE.md"
+    ],
+    [
+      "https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/$${PROJECT_ID}/jobs/kwilt-braze-appointments:run",
+      "microservices/kwilt-braze/cloudbuild.yaml"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/catalogs",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_CATALOGS_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/catalogs",
+      "magento-emd/app/code/Enhance/Braze/CHANGELOG_CATALOG_INTEGRATION.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/catalogs",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_CATALOGS_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/catalogs",
+      "magento-kwt/app/code/Enhance/Braze/CHANGELOG_CATALOG_INTEGRATION.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/messaging",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_MESSAGES_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/messaging",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_MESSAGES_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/subscription_groups",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_SUBSCRIPTION_GROUPS_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/subscription_groups",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_SUBSCRIPTION_GROUPS_INTEGRATION_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/user_data/post_user_track/",
+      "magento-emd/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/api/endpoints/user_data/post_user_track/",
+      "magento-kwt/app/code/Enhance/Braze/BRAZE_INTEGRATION_DEVELOPER_GUIDE.md"
+    ],
+    [
+      "https://www.braze.com/docs/developer_guide/",
+      "kwilthealth.com/docs/BRAZE_IMPLEMENTATION.md"
+    ],
+    [
+      "https://www.braze.com/docs/user_guide/data/user_data_collection/user_profile_lifecycle",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Customer/Auth.vue"
+    ],
+    [
+      "https://www.braze.com/docs/user_guide/data/user_data_collection/user_profile_lifecycle",
+      "enhance.md-version1/resources/js/components/themes/Amaze/Intake/Auth.vue"
+    ],
+    [
+      "https://www.braze.com/docs/user_guide/data/user_data_collection/user_profile_lifecycle",
+      "enhance.md-version1/resources/js/plugins/braze.js"
+    ],
+    [
+      "https://your-magento-domain.com/rest/V1/braze/track/product-view/123",
+      "magento-emd/app/code/Enhance/Braze/HEADLESS_VUEJS_INTEGRATION.md"
+    ],
+    [
+      "https://your-magento-domain.com/rest/V1/braze/track/product-view/123",
+      "magento-kwt/app/code/Enhance/Braze/HEADLESS_VUEJS_INTEGRATION.md"
+    ]
+  ]
+}

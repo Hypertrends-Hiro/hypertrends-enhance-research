@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Braze SDK (UX) + Telemetry API (backend)</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        padding-bottom: 3rem;
+      }
+      .btn-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        align-items: flex-start;
+      }
+      .btn-grid .btn {
+        font-size: 11px;
+      }
+      #log {
+        font-family: ui-monospace, monospace;
+        font-size: 11px;
+        max-height: 360px;
+        overflow: auto;
+        background: #0d1117;
+        color: #c9d1d9;
+        border-radius: 8px;
+        padding: 12px;
+      }
+      pre.inline {
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 10px;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container-fluid py-3 px-4">
+      <h1 class="h4">
+        Playground: UX → Braze Web SDK | Business → Telemetry
+        <code>POST /ingest</code>
+      </h1>
+      <p class="small text-muted mb-2">
+        <strong>Left column (front):</strong> names found in
+        <code>.vue</code> / <code>useBrazeTracking</code> / front-end apps →
+        <code>braze.logCustomEvent</code> (Web SDK).
+        <strong>Right column (Magento + Go):</strong> Magento hooks
+        <code>backend_*</code> and constants from
+        <code>microservices/shared/braze/events.go</code> → <code>fetch</code> a
+        telemetry; the service forwards to Braze REST <code>/users/track</code> if
+        you set <code>BRAZE_API_KEY</code> (a <em>REST</em> key, different from the
+        Web SDK key). Regenerate lists:
+        <code>python scripts/gen_playground_events.py</code> (reads
+        <code>.plan/event-inventory.json</code>).
+      </p>
+
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header py-2 small fw-bold">Configuration</div>
+        <div class="card-body py-2 row g-2">
+          <div class="col-lg-3 col-md-6">
+            <label class="form-label small mb-0">Braze Web API Key</label>
+            <input
+              type="password"
+              id="apiKey"
+              class="form-control form-control-sm"
+              autocomplete="off"
+              placeholder="Web SDK key"
+              value="cb48540d-1e8e-468d-890a-5d7f82a71da6"
+            />
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <label class="form-label small mb-0">Braze SDK base URL</label>
+            <input
+              type="text"
+              id="baseUrl"
+              class="form-control form-control-sm"
+              value="https://sdk.iad-02.braze.com"
+            />
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <label class="form-label small mb-0">Telemetry ingest URL</label>
+            <input
+              type="text"
+              id="telemetryUrl"
+              class="form-control form-control-sm"
+              value="http://127.0.0.1:8090/api/v1/telemetry/ingest"
+            />
+          </div>
+          <div class="col-lg-2 col-md-6">
+            <label class="form-label small mb-0">tenant</label>
+            <input
+              type="text"
+              id="tenant"
+              class="form-control form-control-sm"
+              value="kwt"
+              placeholder="tenant"
+            />
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <label class="form-label small mb-0"
+              >external_id (Braze Web SDK)</label
+            >
+            <div class="input-group input-group-sm">
+              <input
+                type="text"
+                id="extId"
+                class="form-control"
+                value="playground_user_1"
+                placeholder="e.g. playground_user_1 or enhance_123"
+                title="Value passed to braze.changeUser()"
+              />
+              <button type="button" class="btn btn-primary" id="btnChangeUser">
+                changeUser
+              </button>
+            </div>
+            <span class="small text-muted"
+              >Type an id and click <strong>changeUser</strong> (after Braze is
+              initialized).</span
+            >
+          </div>
+          <div class="col-12 small text-secondary">
+            <strong>Telemetry → Braze:</strong> in the API terminal, export
+            <code>BRAZE_API_KEY</code> (REST) and optionally
+            <code>BRAZE_REST_ENDPOINT</code> (e.g.
+            <code>https://rest.iad-02.braze.com</code>). Without these, ingest
+            returns OK but does not call Braze.
+          </div>
+          <div
+            class="col-12 small text-warning border border-warning rounded px-2 py-1"
+          >
+            <strong>Web SDK:</strong> until you call
+            <code>braze.changeUser(external_id)</code>, Braze treats the visitor
+            as <em>anonymous</em>: in Network → <code>.../data/</code> you will not
+            see your <code>external_id</code>, and reports cannot be filtered by
+            that id. After login, apps call <code>changeUser('enhance_'+id)</code> /
+            <code>emd_</code>…
+          </div>
+          <div class="col-12 d-flex flex-wrap gap-2 align-items-center">
+            <button type="button" class="btn btn-primary btn-sm" id="btnInit">
+              Init + changeUser + openSession
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              id="btnFlush"
+            >
+              braze.requestImmediateDataFlush()
+            </button>
+            <span class="small text-muted" id="sdkStatus"
+              >Braze: not initialized</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-xl-6">
+          <div class="card h-100 border-primary shadow-sm">
+            <div class="card-header bg-primary text-white py-2 small">
+              <strong>UX / session / Meta (reference)</strong> →
+              <code>braze.logCustomEvent</code> ·
+              <span id="sdkCount"></span> buttons
+            </div>
+            <div class="card-body py-2">
+              <p class="small text-muted">
+                Front inventory: Meta standard + events in Vue/JS repos (using the
+                same <code>external_id</code> above helps keep everything in one
+                profile).
+              </p>
+              <div class="btn-grid mb-2" id="uxButtons"></div>
+              <div class="input-group input-group-sm">
+                <input
+                  type="text"
+                  id="feCustom"
+                  class="form-control"
+                  placeholder="custom_ux_event"
+                />
+                <button
+                  class="btn btn-success btn-sm"
+                  type="button"
+                  id="btnFeCustom"
+                >
+                  SDK logCustomEvent
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card h-100 border-success shadow-sm">
+            <div class="card-header bg-success text-white py-2 small">
+              <strong>Business / backend</strong> → <code>POST ingest</code> ·
+              <span id="telCount"></span> buttons
+            </div>
+            <div class="card-body py-2">
+              <p class="small text-muted">
+                Each click builds the universal envelope; telemetry deduplicates by
+                <code>message_id</code> and, with <code>BRAZE_API_KEY</code>,
+                forwards to Braze REST. ~19 names overlap with the SDK column
+                (same event via two paths).
+              </p>
+              <div class="btn-grid mb-3" id="telButtons"></div>
+              <div class="small fw-bold text-success mb-1">
+                Profile / identity via telemetry (without SDK)
+              </div>
+              <div class="btn-grid" id="telProfileButtons"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3 shadow-sm">
+        <div class="card-header py-2 small fw-bold">Log</div>
+        <div class="card-body py-2">
+          <pre id="log"></pre>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            id="btnClear"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <p class="small text-muted mt-2">
+        Telemetry events (Magento+Go): 68 · SDK events (front): 78 · Total
+        unique names: 127
+      </p>
+    </div>
+
+    <script src="https://js.appboycdn.com/web-sdk/5.4/braze.min.js"></script>
+    <script>
+      const SDK_EVENT_NAMES = [
+        "AddPaymentInfo",
+        "AddToCart",
+        "CompleteRegistration",
+        "InitiateCheckout",
+        "Lead",
+        "PageView",
+        "Purchase",
+        "Search",
+        "SubmitApplication",
+        "Subscribe",
+        "ViewContent",
+        "account_registered",
+        "add_to_cart",
+        "add_to_cart_failed",
+        "add_to_cart_success",
+        "address_saved",
+        "appointment_booked",
+        "appointment_cancelled",
+        "appointment_rescheduled",
+        "appointment_scheduled",
+        "assessment_slide_submitted",
+        "button_clicked",
+        "cart_viewed",
+        "comprehensive_panel_added",
+        "coupon_applied",
+        "eligibility_denied",
+        "event_name",
+        "intake_abandoned",
+        "intake_completed",
+        "intake_incomplete",
+        "intake_received",
+        "intake_slide_viewed",
+        "intake_started",
+        "intake_step_complete",
+        "intake_step_completed",
+        "logged_into_portal",
+        "login_attempted",
+        "login_failed",
+        "login_success",
+        "membership_payment_attempted",
+        "membership_payment_completed",
+        "membership_payment_failed",
+        "message_sent",
+        "missed_appointment",
+        "order_attempted",
+        "order_cancelled",
+        "order_completed",
+        "order_failed",
+        "order_placed",
+        "page_viewed",
+        "password_reset_failed",
+        "password_reset_request",
+        "password_reset_requested",
+        "payment_failed",
+        "payment_method_save_failed",
+        "payment_method_updated",
+        "payment_successful",
+        "photo_incomplete",
+        "photo_uploaded",
+        "product_listing_viewed",
+        "purchase",
+        "referral_redeemed",
+        "referral_started",
+        "registration_attempted",
+        "registration_completed",
+        "registration_failed",
+        "registration_started",
+        "registration_success",
+        "remove_from_cart",
+        "search_performed",
+        "started_checkout",
+        "subscription_canceled",
+        "subscription_cancelled",
+        "subscription_started",
+        "video_call_ended",
+        "video_call_started",
+        "video_played",
+        "viewed_product",
+      ];
+      const TELEMETRY_EVENT_NAMES = [
+        "account_credit_received",
+        "account_registered",
+        "add_to_cart",
+        "appointment_rescheduled",
+        "appointment_scheduled",
+        "backend_._addresssaveafter",
+        "backend_._cardsaveafter",
+        "backend_._emailsendafter",
+        "backend_._orderplaceafter",
+        "backend_._ordersaveafter",
+        "backend_._registersuccess",
+        "backend_._saveafter",
+        "backend_._subscriptionsaveafter",
+        "backend_._subscriptionstatuschange",
+        "backend_addproduct",
+        "backend_addresssaveafter",
+        "backend_cardsaveafter",
+        "backend_cartitemrepositoryplugin",
+        "backend_checkexpiringcards",
+        "backend_checkstorecredit",
+        "backend_checkupcomingrenewals",
+        "backend_couponmanagementplugin",
+        "backend_emailsendafter",
+        "backend_login",
+        "backend_orderplaceafter",
+        "backend_ordersaveafter",
+        "backend_ordershipped",
+        "backend_passwordreset",
+        "backend_paymentfailed",
+        "backend_productdeleteafter",
+        "backend_productsaveafter",
+        "backend_registersuccess",
+        "backend_removeproduct",
+        "backend_reviewsaveafter",
+        "backend_saveafter",
+        "backend_shippinginformationmanagementplugin",
+        "backend_subscribersaveafter",
+        "backend_subscriptiongeneratesaveafter",
+        "backend_subscriptionsaveafter",
+        "backend_subscriptionstatuschange",
+        "backend_syncorderstobraze",
+        "backend_syncsubscriptionstobraze",
+        "credit_card_expiring",
+        "eligibility_denied",
+        "intake_incomplete",
+        "intake_received",
+        "lab_purchased",
+        "lab_results_ready",
+        "logged_into_portal",
+        "membership_renewal",
+        "midpoint_test_reminder",
+        "missed_appointment",
+        "order_delivered",
+        "order_placed",
+        "order_shipped",
+        "password_reset_request",
+        "payment_failed",
+        "photo_incomplete",
+        "photo_uploaded",
+        "referral_redeemed",
+        "referral_started",
+        "started_checkout",
+        "subscription_canceled",
+        "subscription_changed",
+        "subscription_created",
+        "subscription_reactivated",
+        "upcoming_subscription_renewal",
+        "viewed_product",
+      ];
+
+      (function () {
+        const logEl = document.getElementById("log");
+        function log(msg, err) {
+          const t = new Date().toISOString();
+          logEl.textContent =
+            "[" +
+            t +
+            "] " +
+            msg +
+            (err ? " | " + err : "") +
+            "\n" +
+            logEl.textContent;
+        }
+        document.getElementById("btnClear").onclick = () => {
+          logEl.textContent = "";
+        };
+
+        function uuid() {
+          return typeof crypto !== "undefined" && crypto.randomUUID
+            ? crypto.randomUUID()
+            : "id-" + Math.random().toString(36).slice(2) + Date.now();
+        }
+
+        function sessionId() {
+          let s = sessionStorage.getItem("pg_sess");
+          if (!s) {
+            s = uuid();
+            sessionStorage.setItem("pg_sess", s);
+          }
+          return s;
+        }
+
+        function propsForSdk(name) {
+          const ts = new Date().toISOString();
+          const b = { playground: true, ts, route: location.pathname };
+          const map = {
+            page_viewed: { ...b, page_path: "/demo", previous_page: "/home" },
+            button_clicked: { ...b, button_name: "demo" },
+            cart_viewed: { ...b, cart_total: 99.5, item_count: 2 },
+            address_saved: { ...b, city: "Austin", state: "TX" },
+            assessment_slide_submitted: { ...b, slide_id: "s1" },
+            intake_slide_viewed: { ...b, slide_index: 2, slide_id: "intake_x" },
+            registration_started: { ...b, method: "email" },
+            session_started: { ...b },
+            session_heartbeat: { ...b, active_seconds: 15 },
+            session_idle: { ...b, idle_seconds: 60 },
+            session_resumed: { ...b },
+            session_ended: { ...b, duration_seconds: 900 },
+            active_time_reported: { ...b, active_seconds: 120 },
+            PageView: { ...b },
+            Purchase: { ...b, value: 49.99, currency: "USD" },
+            AddToCart: { ...b, value: 29.99, currency: "USD" },
+            ViewContent: { ...b, content_type: "product" },
+            InitiateCheckout: { ...b, value: 59.98 },
+            AddPaymentInfo: { ...b },
+            CompleteRegistration: { ...b },
+            Lead: { ...b, content_name: "lead_demo" },
+            Subscribe: { ...b },
+            SubmitApplication: { ...b },
+            Search: { ...b, search_string: "demo" },
+          };
+          return map[name] || b;
+        }
+
+        function propsForTelemetry(name) {
+          const ts = new Date().toISOString();
+          const b = { source: "braze-sdk-playground", demo: true, ts };
+          const map = {
+            purchase: { ...b, order_id: "ORD-PG-1", value: 99.99 },
+            add_to_cart: { ...b, sku: "SKU-1", qty: 1, price: 29.99 },
+            started_checkout: { ...b, cart_total: 59.98 },
+            payment_method_updated: { ...b, method: "card" },
+            account_registered: { ...b, customer_id: "cust_demo" },
+            intake_started: { ...b, intake_type: "demo" },
+            intake_step_complete: { ...b, step_number: 2, step_name: "vitals" },
+          };
+          return map[name] || b;
+        }
+
+        let brazeReady = false;
+        function currentExternalId() {
+          return (
+            document.getElementById("extId").value.trim() || "playground_user_1"
+          );
+        }
+        function applyChangeUser() {
+          if (typeof braze === "undefined") return;
+          const ext = currentExternalId();
+          braze.changeUser(ext);
+          log(
+            'braze.changeUser("' + ext + '") — search this external_id in Braze',
+          );
+        }
+        document.getElementById("btnInit").onclick = function () {
+          if (typeof braze === "undefined") {
+            log("ERROR: braze not loaded");
+            return;
+          }
+          const k = document.getElementById("apiKey").value.trim();
+          const u = document.getElementById("baseUrl").value.trim();
+          if (!k) {
+            log("WARN: missing Braze API key");
+            return;
+          }
+          try {
+            braze.initialize(k, {
+              baseUrl: u,
+              enableLogging: true,
+              allowUserSuppliedJavascript: true,
+            });
+            applyChangeUser();
+            braze.automaticallyShowInAppMessages();
+            braze.openSession();
+            brazeReady = true;
+            document.getElementById("sdkStatus").textContent =
+              "Braze: OK + changeUser";
+            log("Braze initialize + changeUser + openSession");
+          } catch (e) {
+            log("Braze init ERROR", String(e));
+          }
+        };
+        document.getElementById("btnChangeUser").onclick = function () {
+          if (!brazeReady) {
+            log("WARN: initialize Braze first");
+            return;
+          }
+          try {
+            applyChangeUser();
+            log("Change external_id above and flush again if needed");
+          } catch (e) {
+            log("changeUser err", String(e));
+          }
+        };
+
+        document.getElementById("btnFlush").onclick = function () {
+          if (!brazeReady) {
+            log("WARN: initialize Braze");
+            return;
+          }
+          try {
+            braze.requestImmediateDataFlush();
+            log("braze.flush");
+          } catch (e) {
+            log("flush err", String(e));
+          }
+        };
+
+        function fireSdk(name) {
+          if (!brazeReady) {
+            log("WARN: initialize Braze first");
+            return;
+          }
+          try {
+            braze.logCustomEvent(name, propsForSdk(name));
+            log("SDK logCustomEvent: " + name);
+          } catch (e) {
+            log("SDK err " + name, String(e));
+          }
+        }
+
+        async function fireTelemetry(name, purchaseBlock) {
+          const url = document.getElementById("telemetryUrl").value.trim();
+          if (!url) {
+            log("WARN: missing telemetry URL");
+            return;
+          }
+          const body = {
+            meta: {
+              message_id: uuid(),
+              occurred_at: new Date().toISOString(),
+              source_system: "braze-sdk-playground",
+              source_channel: "backend",
+              tenant: document.getElementById("tenant").value.trim() || "kwt",
+              schema_version: "1.0.0",
+            },
+            user: {
+              external_id:
+                document.getElementById("extId").value.trim() ||
+                "playground_user_1",
+            },
+            session: {
+              session_id: sessionId(),
+              page_url: location.href,
+              route: "/playground",
+            },
+            event: {
+              name: name,
+              time: new Date().toISOString(),
+              properties: propsForTelemetry(name),
+            },
+            purchase: purchaseBlock || { enabled: false },
+          };
+          try {
+            const r = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+            const txt = await r.text();
+            log(
+              "TELEMETRY " +
+                name +
+                " HTTP " +
+                r.status +
+                " " +
+                txt.slice(0, 200),
+            );
+          } catch (e) {
+            log("TELEMETRY fetch ERROR " + name, String(e));
+          }
+        }
+
+        async function fireTelemetryProfile(kind) {
+          const url = document.getElementById("telemetryUrl").value.trim();
+          const ext =
+            document.getElementById("extId").value.trim() ||
+            "playground_user_1";
+          const body = {
+            meta: {
+              message_id: uuid(),
+              occurred_at: new Date().toISOString(),
+              source_system: "braze-sdk-playground",
+              source_channel: "backend",
+              tenant: document.getElementById("tenant").value.trim() || "kwt",
+              schema_version: "1.0.0",
+            },
+            user: {
+              external_id: ext,
+              email:
+                kind === "email"
+                  ? "demo+" + Date.now() + "@example.com"
+                  : undefined,
+              phone: kind === "phone" ? "+15550001111" : undefined,
+              attributes: {
+                first_name: kind === "name" ? "Demo" : undefined,
+                last_name: kind === "name" ? "Playground" : undefined,
+                custom: {},
+              },
+            },
+            event: {
+              name: "user_profile_patch",
+              time: new Date().toISOString(),
+              properties: { action: kind },
+            },
+            purchase: { enabled: false },
+          };
+          if (kind === "lifecycle")
+            body.user.attributes.custom.lifecycle_stage = "active_checkout";
+          if (kind === "intake")
+            body.user.attributes.custom.intake_type = "weight_loss";
+          if (kind === "tenant")
+            body.user.attributes.custom.tenant_slug =
+              document.getElementById("tenant").value || "kwt";
+          // strip undefined
+          function strip(o) {
+            if (o == null || typeof o !== "object") return o;
+            if (Array.isArray(o)) return o.map(strip);
+            const out = {};
+            for (const [k, v] of Object.entries(o)) {
+              if (v === undefined) continue;
+              out[k] = strip(v);
+            }
+            return out;
+          }
+          const clean = strip(body);
+          try {
+            const r = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(clean),
+            });
+            const txt = await r.text();
+            log(
+              "TELEMETRY profile " +
+                kind +
+                " HTTP " +
+                r.status +
+                " " +
+                txt.slice(0, 180),
+            );
+          } catch (e) {
+            log("TELEMETRY profile err", String(e));
+          }
+        }
+
+        function makeBtn(label, cls, onClick) {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "btn " + cls;
+          b.textContent = label;
+          b.title = label;
+          b.onclick = onClick;
+          return b;
+        }
+
+        const uxHost = document.getElementById("uxButtons");
+        SDK_EVENT_NAMES.forEach(function (name) {
+          uxHost.appendChild(
+            makeBtn(name, "btn-outline-primary btn-sm", function () {
+              fireSdk(name);
+            }),
+          );
+        });
+        document.getElementById("sdkCount").textContent = String(
+          SDK_EVENT_NAMES.length,
+        );
+
+        const telHost = document.getElementById("telButtons");
+        TELEMETRY_EVENT_NAMES.forEach(function (name) {
+          const isPurchase = name.toLowerCase() === "purchase";
+          telHost.appendChild(
+            makeBtn(name, "btn-outline-dark btn-sm", function () {
+              if (isPurchase) {
+                fireTelemetry(name, {
+                  enabled: true,
+                  product_id: "SKU-PG",
+                  currency: "USD",
+                  price: 49.99,
+                  quantity: 1,
+                  properties: { order_id: "ORD-PG-1" },
+                });
+              } else {
+                fireTelemetry(name, null);
+              }
+            }),
+          );
+        });
+        document.getElementById("telCount").textContent = String(
+          TELEMETRY_EVENT_NAMES.length,
+        );
+
+        const prof = document.getElementById("telProfileButtons");
+        [
+          ["email", "setEmail → ingest"],
+          ["phone", "setPhone → ingest"],
+          ["name", "first+last → ingest"],
+          ["lifecycle", "custom lifecycle"],
+          ["intake", "custom intake"],
+          ["tenant", "custom tenant"],
+        ].forEach(function (x) {
+          prof.appendChild(
+            makeBtn(x[1], "btn-outline-success btn-sm", function () {
+              fireTelemetryProfile(x[0]);
+            }),
+          );
+        });
+
+        document.getElementById("btnFeCustom").onclick = function () {
+          const n =
+            document.getElementById("feCustom").value.trim() || "custom_ux";
+          fireSdk(n);
+        };
+      })();
+    </script>
+  </body>
+</html>

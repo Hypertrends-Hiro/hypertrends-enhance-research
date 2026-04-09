@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telemetry — Guía Frontend</title>
+  <style>
+    body{font-family:Arial,sans-serif;line-height:1.45;margin:24px;max-width:1100px}
+    table{border-collapse:collapse;width:100%;margin:14px 0}
+    th,td{border:1px solid #ddd;padding:8px;vertical-align:top}
+    th{background:#f5f5f5}
+    code{background:#f2f2f2;padding:2px 5px;border-radius:4px}
+    pre{background:#1e1e1e;color:#d4d4d4;padding:14px;border-radius:8px;overflow:auto}
+    pre code{background:transparent;color:inherit;padding:0}
+    .nav{margin:16px 0;padding:12px;background:#f8f9fa;border-radius:8px}
+    .nav a{margin-right:16px}
+  </style>
+</head>
+<body>
+  <h1>Guía de uso — Frontend</h1>
+  <div class="nav">
+    <a href="api-plan.html">Plan API</a>
+    <a href="payload-usage.html">Payload universal (detalle)</a>
+    <a href="backend-usage.html">Guía Backend</a>
+    <a href="all-events.html">Mapa de eventos</a>
+  </div>
+
+  <p>El frontend <strong>no llama a Braze</strong> directamente. Envía el <a href="api-plan.html">payload universal</a> a <code>POST /api/v1/telemetry/ingest</code> (o el endpoint que definan). El servicio telemetry valida, deduplica y publica a Braze.</p>
+
+  <h2>Qué debes enviar siempre</h2>
+  <ul>
+    <li><code>meta.message_id</code> — UUIDv7 por evento (reutilizar en retry).</li>
+    <li><code>meta.occurred_at</code> — <code>new Date().toISOString()</code> en el instante del evento.</li>
+    <li><code>meta.source_system</code> — nombre fijo de tu app (ej. <code>kwilthealth.com</code>).</li>
+    <li><code>meta.source_channel</code> — <code>frontend</code>.</li>
+    <li><code>event.name</code> + <code>event.time</code> — normalmente mismo instante que <code>occurred_at</code>.</li>
+    <li><code>user.external_id</code> o <code>user.anonymous_id</code> — al menos uno.</li>
+  </ul>
+
+  <h2>Qué debes enviar para UX / sesión</h2>
+  <table>
+    <tr><th>Campo</th><th>Recomendación</th></tr>
+    <tr><td><code>session.session_id</code></td><td>Obligatorio para unir page views y clicks en una visita.</td></tr>
+    <tr><td><code>session.page_url</code>, <code>session.route</code></td><td>Recomendado en <code>page_viewed</code> y navegación.</td></tr>
+    <tr><td><code>event.properties</code></td><td>Sin PII innecesaria; preferir ids y flags.</td></tr>
+  </table>
+
+  <h2>Qué no hagas desde el frontend</h2>
+  <ul>
+    <li>No actualices perfil Braze directo (email, phone, custom attrs masivos) — eso va por backend o por ingest con <code>user.attributes</code> bajo política.</li>
+    <li>No envíes el mismo <code>message_id</code> para dos eventos distintos.</li>
+    <li>No mandes payloads “legacy” mezclados; usa siempre el envelope del plan API.</li>
+  </ul>
+
+  <h2>Ejemplo mínimo (<code>page_viewed</code>)</h2>
+  <pre><code>{
+  "meta": {
+    "message_id": "018f7aa0-4f2f-7e4a-a0dc-1e6d2d69b001",
+    "occurred_at": "2026-03-23T15:10:00.000Z",
+    "source_system": "kwilthealth.com",
+    "source_channel": "frontend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": { "anonymous_id": "anon_..." },
+  "session": {
+    "session_id": "sess_abc",
+    "page_url": "https://app.example.com/cart",
+    "route": "/cart"
+  },
+  "event": {
+    "name": "page_viewed",
+    "time": "2026-03-23T15:10:00.000Z",
+    "properties": { "previous_route": "/products" }
+  },
+  "purchase": { "enabled": false }
+}</code></pre>
+
+  <p>Más detalle: <a href="payload-usage.html">payload-usage.html</a> (occurred_at, message_id, duplicados, atributos).</p>
+</body>
+</html>

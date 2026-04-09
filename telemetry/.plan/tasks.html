@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telemetry — Plan de tareas (Catalog + Config + Destinos)</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #111827;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #22c55e;
+        --border: #1f2937;
+        --code: #0b1220;
+        --task-id: #818cf8;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .page-shell {
+        max-width: 1320px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 28px 32px;
+        align-items: start;
+        padding: 0 20px 56px;
+      }
+      @media (max-width: 1024px) {
+        .page-shell { grid-template-columns: 1fr; padding: 0 16px 48px; }
+      }
+      main.doc { min-width: 0; }
+      .wrap { padding: 28px 0 0; }
+      aside.toc {
+        position: sticky;
+        top: 16px;
+        padding-top: 28px;
+        padding-right: 8px;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+      }
+      @media (max-width: 1024px) {
+        aside.toc {
+          position: relative;
+          top: 0;
+          max-height: none;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 12px;
+        }
+      }
+      aside.toc .toc-title {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      aside.toc nav { display: flex; flex-direction: column; gap: 2px; }
+      aside.toc a {
+        display: block;
+        font-size: 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 5px 8px;
+        margin-left: -8px;
+        border-radius: 6px;
+      }
+      aside.toc a:hover { color: var(--text); background: rgba(34, 197, 94, 0.08); }
+      aside.toc a.toc-sub { padding-left: 14px; font-size: 11px; color: #64748b; }
+      h1[id], h2[id], h3[id] { scroll-margin-top: 20px; }
+      h1 { font-size: 28px; line-height: 1.2; margin: 0 0 12px; }
+      h2 { font-size: 20px; margin-top: 28px; margin-bottom: 12px; color: #f1f5f9; }
+      h3 { font-size: 15px; margin: 0 0 8px; color: #cbd5e1; }
+      p { margin: 8px 0; color: #d1d5db; }
+      .intro {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+      }
+      .muted { color: var(--muted); font-size: 13px; }
+      code {
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.9em;
+        background: var(--code);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 6px;
+      }
+      .task {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+      }
+      .task-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 8px 12px;
+        margin-bottom: 8px;
+      }
+      .task-id {
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--task-id);
+      }
+      .task-title { font-size: 17px; font-weight: 600; color: #f8fafc; }
+      .task ul { margin: 6px 0 0 18px; color: #cbd5e1; font-size: 14px; }
+      .task li { margin: 4px 0; }
+      .deps { font-size: 12px; color: var(--muted); margin-top: 8px; }
+      a.ext { color: #93c5fd; }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="toc" aria-label="Índice">
+        <nav>
+          <div class="toc-title">Secciones</div>
+          <a href="#top">Inicio</a>
+          <a href="#sec-context">Contexto</a>
+          <a href="#sec-done">Hecho (baseline)</a>
+          <a href="#sec-epic-a">Epic A — Datos</a>
+          <a class="toc-sub" href="#t-a1">A.1 Migraciones</a>
+          <a class="toc-sub" href="#t-a2">A.2 Seeds CI</a>
+          <a href="#sec-epic-b">Epic B — Admin API</a>
+          <a href="#sec-epic-c">Epic C — Ingest</a>
+          <a href="#sec-epic-d">Epic D — GA4</a>
+          <a href="#sec-epic-e">Epic E — Resiliencia</a>
+          <a href="#sec-epic-f">Epic F — Ops</a>
+          <a href="#sec-order">Orden sugerido</a>
+        </nav>
+      </aside>
+      <main class="doc">
+        <div class="wrap">
+          <h1 id="top">Plan de tareas — Telemetry</h1>
+          <p class="muted">
+            Tareas atómicas para el plan
+            <a class="ext" href="catalog-system-config-plan.html">catalog-system-config-plan.html</a>.
+            Administración vía API/Postman (sin front).
+          </p>
+
+          <div class="intro" id="sec-context">
+            <h3 style="margin-top: 0">Contexto</h3>
+            <p style="margin-bottom: 0">
+              Objetivo: catálogo canónico + <code>system_catalog_configs</code> por sistema/tenant, ingest gobernado,
+              Braze hoy, GA4 después, payloads sparse. Documento vivo: marcar tareas en Jira/wiki al implementar.
+            </p>
+          </div>
+
+          <h2 id="sec-done">Hecho (baseline en repo)</h2>
+          <div class="task">
+            <div class="task-header">
+              <span class="task-id">DONE</span>
+              <span class="task-title">Cimientos ya presentes</span>
+            </div>
+            <ul>
+              <li>DDL <code>sql/001_catalog_and_config.sql</code></li>
+              <li>JSON normalizado + <code>scripts/gen_playground_events_catalog.py</code></li>
+              <li>SQL seed <code>scripts/generate_postgres_seed_sql.py</code> → <code>sql/seed/*.sql</code></li>
+              <li>Ingest + pool asyncpg: si <code>DATABASE_URL</code>, valida catálogo + config antes de Braze</li>
+              <li><code>TELEMETRY_IGNORE_CATALOG</code> para debug</li>
+            </ul>
+          </div>
+
+          <h2 id="sec-epic-a">Epic A — Datos y entorno</h2>
+
+          <div class="task" id="t-a1">
+            <div class="task-header">
+              <span class="task-id">T-A1</span>
+              <span class="task-title">Migraciones versionadas (reemplazo o complemento de SQL suelto)</span>
+            </div>
+            <ul>
+              <li>Introducir Alembic (o Flyway/Liquibase acorde al estándar del equipo) apuntando al mismo esquema que <code>001_catalog_and_config.sql</code>.</li>
+              <li>Baseline inicial = estado actual de tablas; siguientes cambios solo vía migración.</li>
+              <li>Documentar comando único: <code>alembic upgrade head</code> (o equivalente).</li>
+            </ul>
+            <p class="deps">Depende de: política de BD del equipo.</p>
+          </div>
+
+          <div class="task" id="t-a2">
+            <div class="task-header">
+              <span class="task-id">T-A2</span>
+              <span class="task-title">Seed en CI o script de entorno dev</span>
+            </div>
+            <ul>
+              <li>Makefile o script <code>scripts/dev_reset_catalog.sh</code>: crear DB → migrar → aplicar <code>010</code> + <code>020</code>.</li>
+              <li>O job CI que valide que los SQL generados aplican sin error sobre Postgres limpio.</li>
+            </ul>
+            <p class="deps">Depende de: T-A1 (opcional si solo validáis SQL en CI sin Alembic).</p>
+          </div>
+
+          <h2 id="sec-epic-b">Epic B — API de administración (Postman)</h2>
+
+          <div class="task" id="t-b1">
+            <div class="task-header">
+              <span class="task-id">T-B1</span>
+              <span class="task-title"><code>POST /api/v1/catalog/events</code></span>
+            </div>
+            <ul>
+              <li>Body: <code>canonical_name</code> (PascalCase validado), <code>display_name</code>, <code>description</code>, <code>aliases[]</code> opcional, <code>lifecycle_status</code> opcional.</li>
+              <li>Insert en <code>catalog_events</code> + aliases en transacción; <code>409</code> si canónico duplicado.</li>
+              <li>Auth: API key o Bearer en header (mismo mecanismo que T-B5).</li>
+            </ul>
+            <p class="deps">Depende de: definición de auth admin (T-B5 puede hacerse primero).</p>
+          </div>
+
+          <div class="task" id="t-b2">
+            <div class="task-header">
+              <span class="task-id">T-B2</span>
+              <span class="task-title"><code>GET /api/v1/catalog/events</code> y <code>GET …/{canonical_name}</code></span>
+            </div>
+            <ul>
+              <li>Listado paginado + filtro por <code>lifecycle_status</code>.</li>
+              <li>Detalle incluye aliases y metadata.</li>
+            </ul>
+            <p class="deps">Depende de: T-B5.</p>
+          </div>
+
+          <div class="task" id="t-b3">
+            <div class="task-header">
+              <span class="task-id">T-B3</span>
+              <span class="task-title"><code>POST /api/v1/system-catalog-configs</code></span>
+            </div>
+            <ul>
+              <li>Body: <code>system_id</code>, <code>tenant</code>, <code>canonical_event_name</code> (o <code>event_id</code>), <code>enabled</code>, <code>destinations</code> JSON (defaults Braze on / GA4 off si omitidos).</li>
+              <li>Resolver <code>event_id</code> por nombre canónico; <code>409</code> si triple duplicado.</li>
+            </ul>
+            <p class="deps">Depende de: T-B5.</p>
+          </div>
+
+          <div class="task" id="t-b4">
+            <div class="task-header">
+              <span class="task-id">T-B4</span>
+              <span class="task-title"><code>PATCH /api/v1/system-catalog-configs/{config_id}</code></span>
+            </div>
+            <ul>
+              <li>Actualizar <code>enabled</code>, <code>destinations</code> (merge o reemplazo documentado).</li>
+              <li><code>GET</code> con filtros <code>system_id</code>, <code>tenant</code>, <code>canonical_name</code> opcional.</li>
+            </ul>
+            <p class="deps">Depende de: T-B3.</p>
+          </div>
+
+          <div class="task" id="t-b5">
+            <div class="task-header">
+              <span class="task-id">T-B5</span>
+              <span class="task-title">Auth + auditoría en rutas admin</span>
+            </div>
+            <ul>
+              <li>Middleware: rechazar sin credencial en <code>/api/v1/catalog/*</code> (excepto públicos explícitos) y <code>/api/v1/system-catalog-configs/*</code>.</li>
+              <li>Tabla o log estructurado: actor, ruta, body resumido, antes/después en PATCH.</li>
+              <li>Variables: <code>TELEMETRY_ADMIN_API_KEYS</code> o integración OIDC (decisión única).</li>
+            </ul>
+          </div>
+
+          <div class="task" id="t-b6">
+            <div class="task-header">
+              <span class="task-id">T-B6</span>
+              <span class="task-title">OpenAPI + colección Postman exportada</span>
+            </div>
+            <ul>
+              <li>Fragmento OpenAPI o archivo en <code>telemetry/docs/openapi-admin.yaml</code>.</li>
+              <li>Colección Postman con variables <code>base_url</code>, <code>admin_key</code>.</li>
+            </ul>
+            <p class="deps">Depende de: T-B1–T-B4.</p>
+          </div>
+
+          <h2 id="sec-epic-c">Epic C — Ingest y política</h2>
+
+          <div class="task" id="t-c1">
+            <div class="task-header">
+              <span class="task-id">T-C1</span>
+              <span class="task-title">Alinear respuesta ingest con estados del plan</span>
+            </div>
+            <ul>
+              <li>Extender modelo de respuesta: <code>status</code> explícito (<code>accepted</code>, <code>duplicate_ignored</code>, <code>accepted_not_forwarded</code>) donde aplique.</li>
+              <li>Campo opcional <code>destinations</code> en respuesta con resultado por destino (texto corto).</li>
+            </ul>
+            <p class="deps">Depende de: acuerdo con clientes del ingest.</p>
+          </div>
+
+          <div class="task" id="t-c2">
+            <div class="task-header">
+              <span class="task-id">T-C2</span>
+              <span class="task-title">Persistir audit trail de ingest en Postgres</span>
+            </div>
+            <ul>
+              <li>Tabla <code>telemetry_ingest_audit</code> (o nombre acordado): <code>message_id</code>, nombres, decisión, notas Braze, timestamps.</li>
+              <li>Escribir en la misma request async (o fire-and-forget con cuidado de errores).</li>
+            </ul>
+            <p class="deps">Depende de: T-A1 si queréis migración única.</p>
+          </div>
+
+          <div class="task" id="t-c3">
+            <div class="task-header">
+              <span class="task-id">T-C3</span>
+              <span class="task-title">Cache de config en memoria / Redis</span>
+            </div>
+            <ul>
+              <li>Invalidar al recibir PATCH/POST admin o TTL corto (ej. 30s) en MVP.</li>
+            </ul>
+            <p class="deps">Depende de: volumen esperado; opcional en dev.</p>
+          </div>
+
+          <div class="task" id="t-c4">
+            <div class="task-header">
+              <span class="task-id">T-C4</span>
+              <span class="task-title"><code>POST /api/v1/catalog/resolve</code> (debug)</span>
+            </div>
+            <ul>
+              <li>Input: <code>system_id</code>, <code>tenant</code>, <code>event_name</code>.</li>
+              <li>Output: canónico, <code>event_id</code>, fila de config resumida, si Braze/GA4 quedarían habilitados.</li>
+            </ul>
+            <p class="deps">Depende de: T-B5.</p>
+          </div>
+
+          <h2 id="sec-epic-d">Epic D — GA4 Measurement Protocol</h2>
+
+          <div class="task" id="t-d1">
+            <div class="task-header">
+              <span class="task-id">T-D1</span>
+              <span class="task-title">Cliente GA4 MP + mapper <code>ga4_mp_v1</code></span>
+            </div>
+            <ul>
+              <li>Leer <code>measurement_id</code> y resolver <code>api_secret</code> desde <code>api_secret_ref</code> → env.</li>
+              <li>Payload sparse: eventos + <code>user_properties</code> cuando corresponda; compras como evento <code>purchase</code>.</li>
+            </ul>
+            <p class="deps">Depende de: T-C1 destinos en respuesta (recomendado).</p>
+          </div>
+
+          <div class="task" id="t-d2">
+            <div class="task-header">
+              <span class="task-id">T-D2</span>
+              <span class="task-title">Dispatcher: respetar <code>destinations.ga4.enabled</code></span>
+            </div>
+            <ul>
+              <li>Paralelo a Braze tras pasar catálogo; errores GA4 no deben tumbar respuesta 200 del ingest (misma filosofía que Braze hoy).</li>
+            </ul>
+            <p class="deps">Depende de: T-D1.</p>
+          </div>
+
+          <h2 id="sec-epic-e">Epic E — Resiliencia</h2>
+
+          <div class="task" id="t-e1">
+            <div class="task-header">
+              <span class="task-id">T-E1</span>
+              <span class="task-title">Outbox + worker asíncrono</span>
+            </div>
+            <ul>
+              <li>Tabla outbox por destino; reintentos con backoff; dead-letter.</li>
+              <li>Ingest solo encola o marca pending; worker envía a Braze/GA4.</li>
+            </ul>
+            <p class="deps">Depende de: T-D2 si GA4 ya está; puede empezar solo Braze.</p>
+          </div>
+
+          <div class="task" id="t-e2">
+            <div class="task-header">
+              <span class="task-id">T-E2</span>
+              <span class="task-title">Idempotencia persistente de <code>message_id</code></span>
+            </div>
+            <ul>
+              <li>Reemplazar LRU en memoria por unique constraint en Postgres (o Redis) para multi-worker.</li>
+            </ul>
+            <p class="deps">Depende de: T-A1 / migración.</p>
+          </div>
+
+          <h2 id="sec-epic-f">Epic F — Operación y calidad</h2>
+
+          <div class="task" id="t-f1">
+            <div class="task-header">
+              <span class="task-id">T-F1</span>
+              <span class="task-title">Tests de integración ingest + Postgres</span>
+            </div>
+            <ul>
+              <li>pytest + contenedor Postgres o testcontainers: catálogo miss, config off, Braze mockeado (httpx mock).</li>
+            </ul>
+          </div>
+
+          <div class="task" id="t-f2">
+            <div class="task-header">
+              <span class="task-id">T-F2</span>
+              <span class="task-title">Métricas y alertas</span>
+            </div>
+            <ul>
+              <li>Contadores: aceptados, omitidos por catálogo, errores Braze/GA4, latencia p95.</li>
+            </ul>
+          </div>
+
+          <h2 id="sec-order">Orden sugerido de ejecución</h2>
+          <ol style="color: #cbd5e1; max-width: 52rem;">
+            <li><strong>T-B5</strong> auth admin → <strong>T-B1</strong> → <strong>T-B3</strong> → <strong>T-B4</strong> → <strong>T-B2</strong> → <strong>T-B6</strong></li>
+            <li>En paralelo: <strong>T-A1</strong> / <strong>T-A2</strong> según prioridad DevOps.</li>
+            <li>Ingest: <strong>T-C1</strong>, <strong>T-C2</strong>, <strong>T-C4</strong>; luego <strong>T-D1</strong>–<strong>T-D2</strong>.</li>
+            <li>Producción: <strong>T-E1</strong>, <strong>T-E2</strong>, <strong>T-F1</strong>, <strong>T-F2</strong>.</li>
+          </ol>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

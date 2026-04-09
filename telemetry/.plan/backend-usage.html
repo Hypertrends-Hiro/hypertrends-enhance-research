@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telemetry — Guía Backend</title>
+  <style>
+    body{font-family:Arial,sans-serif;line-height:1.45;margin:24px;max-width:1100px}
+    table{border-collapse:collapse;width:100%;margin:14px 0}
+    th,td{border:1px solid #ddd;padding:8px;vertical-align:top}
+    th{background:#f5f5f5}
+    code{background:#f2f2f2;padding:2px 5px;border-radius:4px}
+    pre{background:#1e1e1e;color:#d4d4d4;padding:14px;border-radius:8px;overflow:auto}
+    pre code{background:transparent;color:inherit;padding:0}
+    .nav{margin:16px 0;padding:12px;background:#f8f9fa;border-radius:8px}
+    .nav a{margin-right:16px}
+  </style>
+</head>
+<body>
+  <h1>Guía de uso — Backend / workers / scripts</h1>
+  <div class="nav">
+    <a href="api-plan.html">Plan API</a>
+    <a href="payload-usage.html">Payload universal (detalle)</a>
+    <a href="frontend-usage.html">Guía Frontend</a>
+    <a href="events.md">Split eventos (md)</a>
+  </div>
+
+  <p>Los servicios backend, crons y scripts envían el mismo <a href="api-plan.html">payload universal</a> a ingest. <code>meta.source_channel</code> típico: <code>backend</code>, <code>cron</code> o <code>worker</code>.</p>
+
+  <h2>Qué debes enviar siempre</h2>
+  <ul>
+    <li><code>meta.message_id</code> — único por operación lógica (mismo id si reintentas el mismo job).</li>
+    <li><code>meta.occurred_at</code> — hora de negocio (ej. hora del pedido en DB, no hora del cron).</li>
+    <li><code>meta.source_system</code> — identificador del servicio (ej. <code>magento-kwt-braze-sync</code>).</li>
+    <li><code>event.name</code> + <code>event.time</code> alineados al evento de dominio.</li>
+    <li><code>user.external_id</code> cuando el usuario ya está identificado en tu sistema.</li>
+  </ul>
+
+  <h2>Sesión en backend</h2>
+  <p><code>session.*</code> suele ser <strong>opcional</strong>. Úsala si propagas <code>session_id</code> desde un contexto web o si correlacionas con logs.</p>
+
+  <h2>Eventos de negocio y compras</h2>
+  <table>
+    <tr><th>Tipo</th><th>Acción</th></tr>
+    <tr><td>Custom event</td><td><code>event.name</code> + <code>event.properties</code>; <code>purchase.enabled=false</code></td></tr>
+    <tr><td>Purchase Braze</td><td><code>purchase.enabled=true</code> + product_id, currency, price, quantity + <code>event</code> coherente (ej. <code>purchase</code>)</td></tr>
+    <tr><td>Atributos de usuario</td><td><code>user.email</code>, <code>user.attributes</code> — ver <a href="payload-usage.html#atributos">atributos en payload-usage</a></td></tr>
+  </table>
+
+  <h2>Script / adapter en otro lenguaje</h2>
+  <p>Puedes mantener el formato “legacy” interno y transformar a payload universal antes del POST a ingest. Así conectas sin refactor masivo del origen.</p>
+  <ul>
+    <li>Mapear identidad → <code>user.external_id</code></li>
+    <li>Generar <code>message_id</code> estable por fila de job (ej. hash de tenant + order_id + event_name)</li>
+    <li><code>occurred_at</code> desde timestamp de la entidad de negocio</li>
+  </ul>
+
+  <h2>Ejemplo mínimo (orden confirmado)</h2>
+  <pre><code>{
+  "meta": {
+    "message_id": "kwt-order-1000123-purchase",
+    "occurred_at": "2026-03-23T18:00:00Z",
+    "source_system": "order-service",
+    "source_channel": "backend",
+    "tenant": "kwt",
+    "schema_version": "1.0.0"
+  },
+  "user": { "external_id": "magento_456" },
+  "event": {
+    "name": "purchase",
+    "time": "2026-03-23T18:00:00Z",
+    "properties": { "order_id": "1000123" }
+  },
+  "purchase": {
+    "enabled": true,
+    "product_id": "SKU-1",
+    "currency": "USD",
+    "price": 99.9,
+    "quantity": 1,
+    "properties": { "order_id": "1000123" }
+  }
+}</code></pre>
+
+  <p>Transformación Braze y reglas: <a href="api-plan.html">api-plan.html</a> · Detalle de campos: <a href="payload-usage.html">payload-usage.html</a></p>
+</body>
+</html>

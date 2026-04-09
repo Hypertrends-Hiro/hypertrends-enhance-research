@@ -1,0 +1,3090 @@
+{
+  "schema_version": "1.2.0",
+  "title": "Playground-derived event catalog (normalized + classified)",
+  "generated_at": "2026-04-09",
+  "source_of_truth": "telemetry/.plan/braze-sdk-playground.html (SDK_EVENT_NAMES + TELEMETRY_EVENT_NAMES + user_profile_patch from playground JS)",
+  "source_files": [
+    "telemetry/.plan/braze-sdk-playground.html"
+  ],
+  "generator": "telemetry/scripts/gen_playground_events_catalog.py",
+  "machine_readable_contract": "Seed for Catalog + alias rows; SystemCatalogConfig references canonical_name.",
+  "normalization": {
+    "canonical_naming": "PascalCase",
+    "rules": [
+      "snake_case and dotted Magento hooks: normalize separators to _, split segments, PascalCase each, join.",
+      "StudlyCaps tokens without underscores preserved (AddToCart, PageView).",
+      "subscription_canceled + subscription_cancelled -> SubscriptionCanceled.",
+      "purchase + Purchase -> Purchase; add_to_cart + AddToCart -> AddToCart.",
+      "page_viewed -> PageView (single canonical for page-view signals in this catalog)."
+    ],
+    "ingest_resolution": "Resolve incoming event.name to canonical_name (case-insensitive + alias map) before SystemCatalogConfig evaluation."
+  },
+  "taxonomy_reference": {
+    "domain_tags": {
+      "ux_experience": "Session, navigation, UI engagement, product discovery.",
+      "business_system": "Magento/Go hooks, plugins, sync pipelines — server-side.",
+      "clinical_intake_care": "Intake flows, appointments, labs, clinical uploads.",
+      "commerce_monetization": "Cart, checkout, orders, payments, credits, subscriptions.",
+      "identity_account": "Auth, registration, password, portal identity, profile/address traits.",
+      "growth_marketing": "Referrals, leads, messaging, upsell panels, applications.",
+      "lifecycle_ops": "Reminders, expirations, scheduled maintenance events.",
+      "placeholder_meta": "Non-production placeholder — block or quarantine in strict mode.",
+      "requires_manual_domain_review": "Heuristic did not confidently tag; human review in backoffice."
+    },
+    "braze_primary_surface": {
+      "custom_event_domain": "Domain-specific name; REST events[] / Web logCustomEvent.",
+      "custom_event_meta_standard_name": "Marketing-standard label; same transport as custom event.",
+      "purchase_revenue_signal": "Commerce outcome; mapper may populate purchases[] and/or revenue fields.",
+      "user_attributes_patch": "Profile/traits; REST attributes[] primary; optional companion event."
+    },
+    "ga4_measurement_protocol_shape_hint": {
+      "custom_event": "Standard GA4 custom event + params.",
+      "purchase_or_ecommerce": "Use GA4 purchase / ecommerce params where applicable.",
+      "recommended_or_custom_event": "May map to GA4 recommended events when params align; else custom.",
+      "user_properties_or_custom": "User properties updates vs event stream; versioned mapper decides."
+    }
+  },
+  "special_entries": {
+    "UserProfilePatch": "From fireTelemetryProfile(); not in TELEMETRY_EVENT_NAMES array.",
+    "EventName": "Alias event_name — placeholder; exclude from prod or replace."
+  },
+  "stats": {
+    "unique_canonical_events": 115,
+    "playground_raw_sdk_strings": 78,
+    "playground_raw_telemetry_strings": 68,
+    "merged_aliases_total": 128
+  },
+  "events": [
+    {
+      "canonical_name": "AccountCreditReceived",
+      "aliases": [
+        "account_credit_received"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AccountRegistered",
+      "aliases": [
+        "account_registered"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AddPaymentInfo",
+      "aliases": [
+        "AddPaymentInfo"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "AddToCart",
+      "aliases": [
+        "AddToCart",
+        "add_to_cart"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "AddToCartFailed",
+      "aliases": [
+        "add_to_cart_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AddToCartSuccess",
+      "aliases": [
+        "add_to_cart_success"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AddressSaved",
+      "aliases": [
+        "address_saved"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AppointmentBooked",
+      "aliases": [
+        "appointment_booked"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AppointmentCancelled",
+      "aliases": [
+        "appointment_cancelled"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AppointmentRescheduled",
+      "aliases": [
+        "appointment_rescheduled"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AppointmentScheduled",
+      "aliases": [
+        "appointment_scheduled"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "AssessmentSlideSubmitted",
+      "aliases": [
+        "assessment_slide_submitted"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendAddproduct",
+      "aliases": [
+        "backend_addproduct"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendAddresssaveafter",
+      "aliases": [
+        "backend_addresssaveafter",
+        "backend_._addresssaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCardsaveafter",
+      "aliases": [
+        "backend_cardsaveafter",
+        "backend_._cardsaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCartitemrepositoryplugin",
+      "aliases": [
+        "backend_cartitemrepositoryplugin"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCheckexpiringcards",
+      "aliases": [
+        "backend_checkexpiringcards"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "lifecycle_ops"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCheckstorecredit",
+      "aliases": [
+        "backend_checkstorecredit"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCheckupcomingrenewals",
+      "aliases": [
+        "backend_checkupcomingrenewals"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization",
+        "lifecycle_ops"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendCouponmanagementplugin",
+      "aliases": [
+        "backend_couponmanagementplugin"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendEmailsendafter",
+      "aliases": [
+        "backend_emailsendafter",
+        "backend_._emailsendafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendLogin",
+      "aliases": [
+        "backend_login"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendOrderplaceafter",
+      "aliases": [
+        "backend_orderplaceafter",
+        "backend_._orderplaceafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendOrdersaveafter",
+      "aliases": [
+        "backend_ordersaveafter",
+        "backend_._ordersaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendOrdershipped",
+      "aliases": [
+        "backend_ordershipped"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendPasswordreset",
+      "aliases": [
+        "backend_passwordreset"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendPaymentfailed",
+      "aliases": [
+        "backend_paymentfailed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendProductdeleteafter",
+      "aliases": [
+        "backend_productdeleteafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendProductsaveafter",
+      "aliases": [
+        "backend_productsaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendRegistersuccess",
+      "aliases": [
+        "backend_registersuccess",
+        "backend_._registersuccess"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendRemoveproduct",
+      "aliases": [
+        "backend_removeproduct"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendReviewsaveafter",
+      "aliases": [
+        "backend_reviewsaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSaveafter",
+      "aliases": [
+        "backend_saveafter",
+        "backend_._saveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendShippinginformationmanagementplugin",
+      "aliases": [
+        "backend_shippinginformationmanagementplugin"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSubscribersaveafter",
+      "aliases": [
+        "backend_subscribersaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "growth_marketing",
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSubscriptiongeneratesaveafter",
+      "aliases": [
+        "backend_subscriptiongeneratesaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSubscriptionsaveafter",
+      "aliases": [
+        "backend_subscriptionsaveafter",
+        "backend_._subscriptionsaveafter"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSubscriptionstatuschange",
+      "aliases": [
+        "backend_subscriptionstatuschange",
+        "backend_._subscriptionstatuschange"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSyncorderstobraze",
+      "aliases": [
+        "backend_syncorderstobraze"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "BackendSyncsubscriptionstobraze",
+      "aliases": [
+        "backend_syncsubscriptionstobraze"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "business_system",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "ButtonClicked",
+      "aliases": [
+        "button_clicked"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "CartViewed",
+      "aliases": [
+        "cart_viewed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization",
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "CompleteRegistration",
+      "aliases": [
+        "CompleteRegistration"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "ComprehensivePanelAdded",
+      "aliases": [
+        "comprehensive_panel_added"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "CouponApplied",
+      "aliases": [
+        "coupon_applied"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "CreditCardExpiring",
+      "aliases": [
+        "credit_card_expiring"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "EligibilityDenied",
+      "aliases": [
+        "eligibility_denied"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "EventName",
+      "aliases": [
+        "event_name"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "placeholder_meta"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "InitiateCheckout",
+      "aliases": [
+        "InitiateCheckout"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "IntakeAbandoned",
+      "aliases": [
+        "intake_abandoned"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeCompleted",
+      "aliases": [
+        "intake_completed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeIncomplete",
+      "aliases": [
+        "intake_incomplete"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeReceived",
+      "aliases": [
+        "intake_received"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeSlideViewed",
+      "aliases": [
+        "intake_slide_viewed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care",
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeStarted",
+      "aliases": [
+        "intake_started"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeStepComplete",
+      "aliases": [
+        "intake_step_complete"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "IntakeStepCompleted",
+      "aliases": [
+        "intake_step_completed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "LabPurchased",
+      "aliases": [
+        "lab_purchased"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care",
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "purchase_revenue_signal",
+        "rest_track_arrays_typically_used": [
+          "events",
+          "purchases"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "purchase_or_ecommerce",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "LabResultsReady",
+      "aliases": [
+        "lab_results_ready"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "Lead",
+      "aliases": [
+        "Lead"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "LoggedIntoPortal",
+      "aliases": [
+        "logged_into_portal"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "LoginAttempted",
+      "aliases": [
+        "login_attempted"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "LoginFailed",
+      "aliases": [
+        "login_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "LoginSuccess",
+      "aliases": [
+        "login_success"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MembershipPaymentAttempted",
+      "aliases": [
+        "membership_payment_attempted"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MembershipPaymentCompleted",
+      "aliases": [
+        "membership_payment_completed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MembershipPaymentFailed",
+      "aliases": [
+        "membership_payment_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MembershipRenewal",
+      "aliases": [
+        "membership_renewal"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MessageSent",
+      "aliases": [
+        "message_sent"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MidpointTestReminder",
+      "aliases": [
+        "midpoint_test_reminder"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "lifecycle_ops"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "MissedAppointment",
+      "aliases": [
+        "missed_appointment"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderAttempted",
+      "aliases": [
+        "order_attempted"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderCancelled",
+      "aliases": [
+        "order_cancelled"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderCompleted",
+      "aliases": [
+        "order_completed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderDelivered",
+      "aliases": [
+        "order_delivered"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderFailed",
+      "aliases": [
+        "order_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderPlaced",
+      "aliases": [
+        "order_placed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "OrderShipped",
+      "aliases": [
+        "order_shipped"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PageView",
+      "aliases": [
+        "PageView",
+        "page_viewed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "PasswordResetFailed",
+      "aliases": [
+        "password_reset_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PasswordResetRequest",
+      "aliases": [
+        "password_reset_request"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PasswordResetRequested",
+      "aliases": [
+        "password_reset_requested"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PaymentFailed",
+      "aliases": [
+        "payment_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PaymentMethodSaveFailed",
+      "aliases": [
+        "payment_method_save_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PaymentMethodUpdated",
+      "aliases": [
+        "payment_method_updated"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PaymentSuccessful",
+      "aliases": [
+        "payment_successful"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PhotoIncomplete",
+      "aliases": [
+        "photo_incomplete"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "PhotoUploaded",
+      "aliases": [
+        "photo_uploaded"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "clinical_intake_care"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "ProductListingViewed",
+      "aliases": [
+        "product_listing_viewed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization",
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "Purchase",
+      "aliases": [
+        "purchase",
+        "Purchase"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "purchase_revenue_signal",
+        "rest_track_arrays_typically_used": [
+          "events",
+          "purchases"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "purchase_or_ecommerce",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "ReferralRedeemed",
+      "aliases": [
+        "referral_redeemed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "ReferralStarted",
+      "aliases": [
+        "referral_started"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RegistrationAttempted",
+      "aliases": [
+        "registration_attempted"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RegistrationCompleted",
+      "aliases": [
+        "registration_completed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RegistrationFailed",
+      "aliases": [
+        "registration_failed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RegistrationStarted",
+      "aliases": [
+        "registration_started"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RegistrationSuccess",
+      "aliases": [
+        "registration_success"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "RemoveFromCart",
+      "aliases": [
+        "remove_from_cart"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "Search",
+      "aliases": [
+        "Search"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "SearchPerformed",
+      "aliases": [
+        "search_performed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "StartedCheckout",
+      "aliases": [
+        "started_checkout"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "SubmitApplication",
+      "aliases": [
+        "SubmitApplication"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "growth_marketing",
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "Subscribe",
+      "aliases": [
+        "Subscribe"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "growth_marketing"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "SubscriptionCanceled",
+      "aliases": [
+        "subscription_canceled",
+        "subscription_cancelled"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "SubscriptionChanged",
+      "aliases": [
+        "subscription_changed"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "SubscriptionCreated",
+      "aliases": [
+        "subscription_created"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "SubscriptionReactivated",
+      "aliases": [
+        "subscription_reactivated"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "SubscriptionStarted",
+      "aliases": [
+        "subscription_started"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "UpcomingSubscriptionRenewal",
+      "aliases": [
+        "upcoming_subscription_renewal"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "UserProfilePatch",
+      "aliases": [
+        "user_profile_patch"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": false,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "identity_account"
+      ],
+      "braze": {
+        "primary_surface": "user_attributes_patch",
+        "rest_track_arrays_typically_used": [
+          "attributes",
+          "events"
+        ],
+        "sdk_web_typical": "setUserAttribute / setEmail / etc. + optional logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "user_properties_or_custom",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "VideoCallEnded",
+      "aliases": [
+        "video_call_ended"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "VideoCallStarted",
+      "aliases": [
+        "video_call_started"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "VideoPlayed",
+      "aliases": [
+        "video_played"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    },
+    {
+      "canonical_name": "ViewContent",
+      "aliases": [
+        "ViewContent"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": false
+      },
+      "domain_tags": [
+        "ux_experience"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_meta_standard_name",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "recommended_or_custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": true
+    },
+    {
+      "canonical_name": "ViewedProduct",
+      "aliases": [
+        "viewed_product"
+      ],
+      "observed_in_playground_columns": {
+        "web_sdk_custom_event_buttons": true,
+        "telemetry_ingest_buttons": true
+      },
+      "domain_tags": [
+        "commerce_monetization"
+      ],
+      "braze": {
+        "primary_surface": "custom_event_domain",
+        "rest_track_arrays_typically_used": [
+          "events"
+        ],
+        "sdk_web_typical": "logCustomEvent",
+        "notes": "In Braze, most names are custom events via REST events[] or Web SDK logCustomEvent. Revenue may additionally use purchases[]. User traits use attributes[]."
+      },
+      "ga4": {
+        "measurement_protocol_shape_hint": "custom_event",
+        "notes": "GA4 uses client_id/user_id + events[] with name + params; user properties are a separate surface. Map from universal envelope via versioned mappers."
+      },
+      "meta_standard_event_name": false
+    }
+  ]
+}

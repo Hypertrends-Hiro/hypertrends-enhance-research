@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telemetry Genial - Plan Maestro</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --muted:#9fb0d6;
+      --text:#eaf0ff;
+      --accent:#49dcb1;
+      --warn:#ffd166;
+      --danger:#ff6b6b;
+      --line:#28365f;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#0b1020 0%,#0d1429 100%);
+      color:var(--text);
+      line-height:1.5;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:32px 20px 56px}
+    .hero{
+      border:1px solid var(--line);
+      background:radial-gradient(1200px 400px at 15% -10%,#1b2b52 0%,#121a33 45%,#121a33 100%);
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 12px 34px rgba(0,0,0,.28);
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 6px;font-size:34px}
+    h2{margin:0 0 14px;font-size:24px}
+    h3{margin:0 0 10px;font-size:18px}
+    p{margin:0 0 12px;color:var(--muted)}
+    .pill{
+      display:inline-block;
+      font-size:12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:4px 10px;
+      margin-right:8px;
+      color:#b7c6ea;
+      background:#101a35;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+      margin-top:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+    }
+    .ok{color:var(--accent)}
+    .warn{color:var(--warn)}
+    .bad{color:var(--danger)}
+    ul{margin:8px 0 0 20px;padding:0}
+    li{margin:6px 0;color:#cfdbfb}
+    .timeline{
+      margin-top:14px;
+      border-left:2px solid var(--line);
+      padding-left:14px;
+    }
+    .step{margin-bottom:16px}
+    .step b{color:#fff}
+    .table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:8px;
+      overflow:hidden;
+      border-radius:12px;
+    }
+    .table th,.table td{
+      border:1px solid var(--line);
+      padding:10px;
+      text-align:left;
+      vertical-align:top;
+      font-size:14px;
+    }
+    .table th{background:#101a35;color:#dbe6ff}
+    code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      background:#0f1730;
+      border:1px solid #24355f;
+      border-radius:7px;
+      padding:2px 6px;
+      color:#d5e2ff;
+      font-size:12px;
+    }
+    .footer{
+      margin-top:18px;
+      font-size:13px;
+      color:#91a3cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Telemetry</span>
+      <span class="pill">Catalog-First</span>
+      <span class="pill">Braze Gateway</span>
+      <h1>Plan para un Telemetry Genial</h1>
+      <p>Objetivo: convertir <code>telemetry</code> en la capa central de gobierno de eventos, atributos y compras. Todo entra por el mismo API, el catalogo decide que se envia, y cada decision queda auditada.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h3>Lo que ya esta bien</h3>
+        <ul>
+          <li class="ok">Ingesta unificada (<code>/ingest</code> y <code>/ingest/batch</code>).</li>
+          <li class="ok">Contrato universal flexible (meta/user/session/event/purchase).</li>
+          <li class="ok">Forward a Braze ya operativo para validar end-to-end.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Riesgos actuales</h3>
+        <ul>
+          <li class="warn">Idempotencia en memoria (se pierde entre procesos/restarts).</li>
+          <li class="warn">Catalogo aun stub (sin gobernanza real).</li>
+          <li class="bad">Sin outbox persistente ni retries robustos.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Regla de oro</h3>
+        <ul>
+          <li>Si un evento no esta en catalogo o esta deshabilitado:</li>
+          <li class="warn"><b>No se reenvia</b> a Braze.</li>
+          <li class="ok">Se registra rechazo estructurado con motivo.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:14px">
+      <h2>Modelo operativo recomendado</h2>
+      <table class="table">
+        <thead>
+          <tr><th>Etapa</th><th>Que hace</th><th>Salida</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1) Ingesta</td>
+            <td>Valida payload, extrae <code>message_id</code>, <code>event.name</code>, <code>source_system</code>.</td>
+            <td><code>accepted</code> o <code>rejected_invalid_payload</code></td>
+          </tr>
+          <tr>
+            <td>2) Catalogo</td>
+            <td>Verifica si el evento existe y si esta habilitado por entorno/tenant/source.</td>
+            <td><code>accepted_not_enabled</code> o <code>accepted_queued</code></td>
+          </tr>
+          <tr>
+            <td>3) Outbox</td>
+            <td>Guarda item para despacho asincrono e idempotente a destinos.</td>
+            <td><code>pending</code> / <code>sent</code> / <code>failed</code></td>
+          </tr>
+          <tr>
+            <td>4) Worker</td>
+            <td>Reintenta con backoff, registra errores, mueve a dead-letter si falla.</td>
+            <td><code>accepted_forwarded</code> o <code>delivery_failed_dead_letter</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" style="margin-top:14px">
+      <h2>Plan por fases (realista y robusto)</h2>
+      <div class="timeline">
+        <div class="step">
+          <b>Fase 1 - Gobernanza (1-2 semanas)</b>
+          <p>Catalogo real (JSON/DB), validacion strict de eventos, estados de respuesta estandar y logs estructurados de descarte.</p>
+        </div>
+        <div class="step">
+          <b>Fase 2 - Persistencia (2-3 semanas)</b>
+          <p>Agregar PostgreSQL, tablas <code>telemetry_events</code> y <code>telemetry_outbox</code>, idempotencia persistente por <code>message_id</code>.</p>
+        </div>
+        <div class="step">
+          <b>Fase 3 - Entrega confiable (2-3 semanas)</b>
+          <p>Worker de despacho, retries con backoff, dead-letter, metrica de entregas y errores por destino.</p>
+        </div>
+        <div class="step">
+          <b>Fase 4 - Seguridad y operacion (1-2 semanas)</b>
+          <p>API keys por sistema emisor, rate limits, CORS por entorno, alertas de salud y tablero operativo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:14px">
+      <article class="card">
+        <h3>KPIs clave</h3>
+        <ul>
+          <li>100% mensajes con estado final trazable.</li>
+          <li>0 perdidas silenciosas.</li>
+          <li>p95 ingesta &lt; 150 ms (sin esperar Braze).</li>
+          <li>Error de delivery &lt; 1% despues de retries.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Politica de rechazo</h3>
+        <ul>
+          <li><code>unknown_event</code>: no existe en catalogo.</li>
+          <li><code>disabled_event</code>: existe pero no habilitado.</li>
+          <li><code>invalid_schema</code>: payload fuera de contrato.</li>
+          <li>Todos con <code>message_id</code> + motivo + source.</li>
+        </ul>
+      </article>
+    </section>
+
+    <p class="footer">
+      Documento creado para guiar una implementacion de telemetria robusta, catalog-first y lista para operar a escala.
+    </p>
+  </div>
+</body>
+</html>

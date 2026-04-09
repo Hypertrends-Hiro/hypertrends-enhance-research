@@ -1,0 +1,31 @@
+[project]
+name = "telemetry"
+version = "0.1.0"
+description = "Telemetry service baseline API"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlalchemy",
+  "asyncpg",
+  "pydantic",
+  "pydantic-settings",
+  "httpx",
+  "python-dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-asyncio",
+  "httpx",
+  "ruff",
+  "mypy",
+]
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
