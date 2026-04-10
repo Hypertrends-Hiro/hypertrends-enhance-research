@@ -2,13 +2,15 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.deps import require_telemetry_api_key
 
 # Carga telemetry/.env al importar (BRAZE_* para reenvío a Braze).
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
-from app.routers import catalog, ingest
+from app.routers import admin_catalog, admin_config, catalog, ingest
 
 
 @asynccontextmanager
@@ -23,9 +25,11 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Telemetry API",
-        version="0.3.0",
+        version="0.5.0",
         description="""
-**Phase 1 — APIs abiertas** (sin autenticación). Ingesta del payload universal documentado en `telemetry/.plan/`.
+**API key required** — set `TELEMETRY_API_KEYS` and send `X-Telemetry-Api-Key` or `Authorization: Bearer`.
+
+Universal ingest payload: `telemetry/.plan/`.
 
 - Guía payload: `telemetry/.plan/payload-usage.html`
 - Frontend: `telemetry/.plan/frontend-usage.html`
@@ -47,8 +51,10 @@ def create_app() -> FastAPI:
 
     app.include_router(ingest.router, prefix="/api/v1")
     app.include_router(catalog.router, prefix="/api/v1")
+    app.include_router(admin_catalog.router, prefix="/api/v1")
+    app.include_router(admin_config.router, prefix="/api/v1")
 
-    @app.get("/health")
+    @app.get("/health", dependencies=[Depends(require_telemetry_api_key)])
     async def health() -> dict[str, str]:
         return {"status": "ok"}
 

@@ -1,21 +1,24 @@
 """
-Telemetry ingest — open endpoints for Phase 1 (no auth).
+Telemetry ingest — requires TELEMETRY_API_KEYS (X-Telemetry-Api-Key or Bearer).
 
-Security (API keys, mTLS, rate limits) will be added in a later phase.
+When DATABASE_URL is set, catalog + system_catalog_configs gate Braze.
 """
 
 from __future__ import annotations
 
 import asyncio
+import uuid
 from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Final
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.braze_forward import braze_configured, forward_ingest_to_braze
-from app.catalog_policy import ingest_braze_decision
+from app.deps import require_telemetry_api_key
+from app.catalog_policy import fetch_canonical_name, ingest_braze_decision, resolve_event_id
 from app.db import db_pool
+from app.ingest_audit import try_record_ingest_audit
 from app.schemas.ingest import (
     BatchIngestRequest,
     BatchIngestResponse,
@@ -24,18 +27,18 @@ from app.schemas.ingest import (
     IngestResponse,
 )
 
-router = APIRouter(prefix="/telemetry", tags=["telemetry"])
+router = APIRouter(
+    prefix="/telemetry",
+    tags=["telemetry"],
+    dependencies=[Depends(require_telemetry_api_key)],
+)
 
-# In-process idempotency (dev / single-worker). Replace with Redis/DB in production.
 _MAX_IDS: Final[int] = 50_000
 _seen_message_ids: OrderedDict[str, None] = OrderedDict()
 _lock = asyncio.Lock()
 
 
 async def _register_id(message_id: str) -> bool:
-    """
-    Returns True if new, False if duplicate.
-    """
     async with _lock:
         if message_id in _seen_message_ids:
             _seen_message_ids.move_to_end(message_id)
@@ -50,37 +53,52 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-async def _braze_note_for_ingest(body: IngestPayload) -> str:
-    """
-    If DATABASE_URL is set, enforce catalog + system_catalog_configs before calling Braze.
-    Set TELEMETRY_IGNORE_CATALOG=1 to skip DB checks while DATABASE_URL is set.
-    """
+async def _ingest_forwarding(
+    body: IngestPayload,
+) -> tuple[str, dict[str, str], str | None, uuid.UUID | None]:
+    """Human note fragment (after 'Accepted. '), forwarding map, canonical, event_id."""
     pool = db_pool()
+    forwarding: dict[str, str] = {}
+    canonical_name: str | None = None
+    event_id: uuid.UUID | None = None
     if pool:
         async with pool.acquire() as conn:
             allow, cat_reason = await ingest_braze_decision(conn, body)
+            eid = await resolve_event_id(conn, body.event.name)
+            if eid:
+                event_id = eid
+                canonical_name = await fetch_canonical_name(conn, eid)
         if not allow:
-            return f"catalog: {cat_reason}; Braze not called."
+            forwarding["braze"] = "skipped"
+            return f"catalog: {cat_reason}; Braze not called.", forwarding, canonical_name, event_id
         if braze_configured():
             b = await forward_ingest_to_braze(body)
-            return f"{b} (catalog ok)"
-        return "catalog ok; Braze forward off (set BRAZE_API_KEY + BRAZE_REST_ENDPOINT)."
+            if "ok" in b.lower():
+                forwarding["braze"] = "ok"
+            elif "skipped" in b.lower():
+                forwarding["braze"] = "skipped"
+            else:
+                forwarding["braze"] = "error"
+            return f"{b} (catalog ok)", forwarding, canonical_name, event_id
+        forwarding["braze"] = "skipped_no_credentials"
+        return (
+            "catalog ok; Braze forward off (set BRAZE_API_KEY + BRAZE_REST_ENDPOINT).",
+            forwarding,
+            canonical_name,
+            event_id,
+        )
     if braze_configured():
-        return await forward_ingest_to_braze(body)
-    return "Braze forward off (set BRAZE_API_KEY + BRAZE_REST_ENDPOINT)."
+        b = await forward_ingest_to_braze(body)
+        forwarding["braze"] = "ok" if "ok" in b.lower() else ("skipped" if "skipped" in b.lower() else "error")
+        return b, forwarding, None, None
+    forwarding["braze"] = "skipped_no_credentials"
+    return "Braze forward off (set BRAZE_API_KEY + BRAZE_REST_ENDPOINT).", forwarding, None, None
 
 
 @router.post(
     "/ingest",
     response_model=IngestResponse,
     summary="Ingest single universal telemetry message",
-    description="""
-Accepts one payload matching `telemetry/.plan/api-plan.html`.
-
-Validates shape, applies in-memory idempotency, and **forwards to Braze** `/users/track` when `BRAZE_API_KEY` is set.
-
-See also: `payload-usage.html`, `frontend-usage.html`, `backend-usage.html`.
-    """,
 )
 async def ingest_one(body: IngestPayload) -> IngestResponse:
     mid = body.meta.message_id
@@ -94,15 +112,36 @@ async def ingest_one(body: IngestPayload) -> IngestResponse:
             duplicate=True,
             received_at=received,
             note="Same message_id was already accepted in this process.",
+            forwarding=None,
         )
 
-    braze_note = await _braze_note_for_ingest(body)
+    suffix, forwarding, canonical_name, event_id = await _ingest_forwarding(body)
+    note_full = f"Accepted. {suffix}"
+    status_out = "accepted"
+    if forwarding.get("braze") == "skipped" and "catalog:" in suffix:
+        status_out = "accepted_not_forwarded"
+
+    pool = db_pool()
+    await try_record_ingest_audit(
+        pool,
+        message_id=mid,
+        source_system=(body.meta.source_system or "").strip(),
+        tenant=(body.meta.tenant or "").strip(),
+        original_event_name=body.event.name,
+        canonical_name=canonical_name,
+        event_id=event_id,
+        decision=status_out,
+        forwarding=forwarding,
+        note=note_full,
+    )
+
     return IngestResponse(
-        status="accepted",
+        status=status_out,
         message_id=mid,
         duplicate=False,
         received_at=received,
-        note=f"Accepted. {braze_note}",
+        note=note_full,
+        forwarding=forwarding or None,
     )
 
 
@@ -110,7 +149,6 @@ async def ingest_one(body: IngestPayload) -> IngestResponse:
     "/ingest/batch",
     response_model=BatchIngestResponse,
     summary="Ingest up to 100 universal messages",
-    description="Cada ítem nuevo se reenvía a Braze cuando BRAZE_API_KEY está configurada (igual que /ingest).",
 )
 async def ingest_batch(body: BatchIngestRequest) -> BatchIngestResponse:
     received = _now()
@@ -127,17 +165,36 @@ async def ingest_batch(body: BatchIngestRequest) -> BatchIngestResponse:
                     status="duplicate_ignored",
                     duplicate=True,
                     note="Duplicate message_id in this process.",
+                    forwarding=None,
                 )
             )
         else:
-            bnote = await _braze_note_for_ingest(item)
+            suffix, forwarding, canonical_name, event_id = await _ingest_forwarding(item)
+            note_full = f"Accepted. {suffix}"
+            st = "accepted"
+            if forwarding.get("braze") == "skipped" and "catalog:" in suffix:
+                st = "accepted_not_forwarded"
+            pool = db_pool()
+            await try_record_ingest_audit(
+                pool,
+                message_id=mid,
+                source_system=(item.meta.source_system or "").strip(),
+                tenant=(item.meta.tenant or "").strip(),
+                original_event_name=item.event.name,
+                canonical_name=canonical_name,
+                event_id=event_id,
+                decision=st,
+                forwarding=forwarding,
+                note=note_full,
+            )
             results.append(
                 BatchItemResult(
                     index=i,
                     message_id=mid,
-                    status="accepted",
+                    status=st,
                     duplicate=False,
-                    note=f"Accepted. {bnote}",
+                    note=note_full,
+                    forwarding=forwarding or None,
                 )
             )
 

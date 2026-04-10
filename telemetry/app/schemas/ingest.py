@@ -84,11 +84,15 @@ class IngestPayload(BaseModel):
 
 
 class IngestResponse(BaseModel):
-    status: str = Field(..., description="accepted | duplicate_ignored")
+    status: str = Field(..., description="accepted | duplicate_ignored | accepted_not_forwarded")
     message_id: str
     duplicate: bool = False
     received_at: datetime
     note: str | None = None
+    forwarding: dict[str, str] | None = Field(
+        default=None,
+        description="Per-destination outcome, e.g. braze=ok|skipped|error",
+    )
 
 
 class BatchIngestRequest(BaseModel):
@@ -101,6 +105,7 @@ class BatchItemResult(BaseModel):
     status: str
     duplicate: bool = False
     note: str | None = None
+    forwarding: dict[str, str] | None = None
 
 
 class BatchIngestResponse(BaseModel):
